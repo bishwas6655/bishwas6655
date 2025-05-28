@@ -1,0 +1,249 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f0f4f5;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 500px;
+  margin: 50px auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Form header with logo and heading */
+.form-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-header img {
+  height: 150px;
+  margin-bottom: 10px;
+}
+
+.form-header h2 {
+  margin: 0;
+  color: #007f7f;
+  font-size: 26px;
+}
+
+/* Form fields */
+form label {
+  display: block;
+  margin: 15px 0 6px;
+  font-weight: 500;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+/* Checkbox */
+form label input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+
+/* Submit button */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #009999;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #007777;
+}
+
+/* Login link */
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login-link a {
+  color: #007777;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+.success-container {
+  max-width: 400px;
+  margin: 80px auto;
+  background: #ffffff;
+  padding: 40px 30px;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tick {
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.success-container h2 {
+  color: #007f7f;
+  margin-bottom: 10px;
+}
+
+.success-container p {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* 🔹 Fullscreen background video style */
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* 🔹 Login page with centered layout */
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* 🔹 Login form container */
+.container {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 🔹 Login button */
+.btn {
+  padding: 12px 24px;
+  background-color: #009999;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  width: 100%;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #007777;
+}
+
+/* 🔹 Forgot password link */
+.forgot-link {
+  text-align: right;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.forgot-link a {
+  font-size: 14px;
+  text-decoration: none;
+  color: #007777;
+}
+
+.forgot-link a:hover {
+  text-decoration: underline;
+}
+
+/* ============================= */
+/* 🎯 LANDING PAGE STYLES ONLY */
+/* ============================= */
+.landing-page {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  font-family: "Segoe UI", sans-serif;
+  color: white;
+  text-align: center;
+}
+
+/* Fullscreen video */
+.landing-page #bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 115vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.landing-page .logo-block {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-60%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: -50px;
+}
+
+.landing-page .logo-fixed {
+  width: 200px;
+  margin: 0;
+  padding: 0;
+}
+.landing-page .start-button {
+  position: absolute;
+  bottom: 10px;
+  left: 49%;
+  transform: translateX(-49%);
+  padding: 12px 30px;
+  background-color: #ffffff;
+  color: #007e7e;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 30px;
+  font-size: 1rem;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.login-btn {
+  padding: 8px;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.login-btn {
+  background-color: #f0f0f0;
+  color: #333;
+}

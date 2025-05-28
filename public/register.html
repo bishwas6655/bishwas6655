@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career Scopes - Register</title>
+    <link rel="stylesheet" href="./css/register-styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="register-container">
+      <div class="logo">
+        <a href="./index.html">
+          <img src="./images/logo.jpg" alt="careerScops" />
+        </a>
+      </div>
+
+      <form class="register-form">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="number">Number</label>
+          <input type="tel" id="number" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" required />
+        </div>
+
+        <div class="form-group">
+          <label for="interest">Select Of Interest</label>
+          <div class="select-wrapper">
+            <select id="interest" required>
+              <option value="career-coaching">Career Coaching</option>
+              <option value="resume-tailoring">Resume Tailoring</option>
+              <option value="psychometric-testing">Psychometric Testing</option>
+              <option value="networking">Effective Networking</option>
+              <option value="interview-coaching">Interview Coaching</option>
+              <option value="employment-searching">Employment Searching</option>
+              <option value="linkedin-profiling">LinkedIn Profiling</option>
+              <option value="packages">Packages</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="state">State*</label>
+          <div class="select-wrapper">
+            <select id="state" required>
+              <option value="victoria">Victoria</option>
+              <option value="new-south-wales">New South Wales</option>
+              <option value="queensland">Queensland</option>
+              <option value="western-australia">Western Australia</option>
+              <option value="south-australia">South Australia</option>
+              <option value="tasmania">Tasmania</option>
+              <option value="northern-territory">Northern Territory</option>
+              <option value="act">Australian Capital Territory</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="terms" required />
+          <label for="terms"
+            >I agree to the <a href="#">Privacy Policy</a> and
+            <a href="#">Terms</a></label
+          >
+        </div>
+
+        <a
+          style="width: 100%; display: block; text-align: center"
+          type="submit"
+          class="register-btn"
+          href="./success.html"
+          >Register</a
+        >
+      </form>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html>

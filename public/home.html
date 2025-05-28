@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <style>
+      main container {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+      }
+
+      main container video {
+        position: absolute;
+        object-fit: cover;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Just styling the content of the div, the *magic* in the previous rules */
+      main container .caption {
+        z-index: 1;
+        position: absolute;
+        text-align: center;
+        padding: 10px;
+        inset: 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+      }
+
+      h1 {
+        font-size: 5rem;
+        text-align: center;
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <container class="container">
+        <div class="logo">
+          <a href="./index.html">
+            <img src="./images/logo_white.png" alt="careerScops" />
+          </a>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="./home.html" class="active">Home</a></li>
+            <li><a href="./about-us.html">About us</a></li>
+            <li><a href="./testimonials.html">Testimonials</a></li>
+            <li><a href="./contact-us.html">Contact Us</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <a href="./login.html" class="login-btn">Login</a>
+          <a href="./register.html" class="register-btn">Register</a>
+        </div>
+      </container>
+    </header>
+    <main>
+      <container>
+        <video autoplay muted loop onloadstart="this.playbackRate = 0.25;">
+          <source src="./images/animated-background.mp4" type="video/mp4" />
+        </video>
+        <div class="caption">
+          <h1>Empower Your Career Journey with CareerScopes</h1>
+        </div>
+      </container>
+    </main>
+  </body>
+</html>

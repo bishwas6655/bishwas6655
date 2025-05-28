@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <style>
+      main container {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+      }
+
+      main container video {
+        position: absolute;
+        object-fit: cover;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Just styling the content of the div, the *magic* in the previous rules */
+      main container .caption {
+        z-index: 1;
+        position: absolute;
+        text-align: center;
+        padding: 10px;
+        inset: 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+      }
+
+      main container article {
+        margin-top: 5rem;
+        flex: 1;
+      }
+
+      .header {
+        font-size: 5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .footer {
+        font-size: 2rem;
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .content__desc {
+        padding: 2rem;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 2rem;
+      }
+
+      .content__desc > p {
+        text-align: center;
+        color: white;
+        font-size: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <container class="container">
+        <div class="logo">
+          <a href="./index.html">
+            <img src="./images/logo_white.png" alt="careerScops" />
+          </a>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./about-us.html" class="active">About us</a></li>
+            <li><a href="./testimonials.html">Testimonials</a></li>
+            <li><a href="./contact-us.html">Contact Us</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <a href="./login.html" class="login-btn">Login</a>
+          <a href="./register.html" class="register-btn">Register</a>
+        </div>
+      </container>
+    </header>
+    <main>
+      <container>
+        <video autoplay muted loop onloadstart="this.playbackRate = 0.25;">
+          <source src="./images/animated-background.mp4" type="video/mp4" />
+        </video>
+        <div class="caption">
+          <article>
+            <div class="header">About Us</div>
+            <div class="content">
+              <div class="content__desc">
+                <p>
+                  Meet Lucy your Career Development Practitioner who specialises
+                  in guiding her clients towards possibilities and opportunities
+                  through a unique holistic approach. Her friendly and
+                  supportive demeanour along with her knowledgeable expertise
+                  will unlock your true potential. Lucy’s commitment is about
+                  empowering and nurturing individual strengths to plan
+                  effective and strategic pathways towards your career success.
+                </p>
+              </div>
+              <img src="./images/image.png" alt="demo-image" />
+            </div>
+            <div class="footer">“Be great, because you love what you do”</div>
+          </article>
+        </div>
+      </container>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,474 @@
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Header */
+header {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  background: transparent;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 150px;
+  height: 150px;
+}
+
+nav ul {
+  display: flex;
+}
+
+nav ul li {
+  margin-left: 30px;
+}
+
+nav ul li a {
+  font-weight: 500;
+  position: relative;
+}
+
+nav ul li a.active::after,
+nav ul li a:hover::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.login-btn,
+.register-btn {
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.login-btn {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.register-btn {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Hero Section */
+.hero {
+  padding: 60px 0;
+}
+
+.hero .container {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.hero-content {
+  flex: 1;
+}
+
+.hero-content h1 {
+  font-size: 42px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.hero-content p {
+  font-size: 18px;
+  color: #666;
+  max-width: 500px;
+}
+
+.hero-image {
+  flex: 1;
+  height: 300px;
+  background-image: url("../images/Foreground.jpeg");
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  background-color: #7fb9b1;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.hero-image:hover {
+  filter: grayscale(1);
+  transform: scale(1.25);
+}
+
+.image-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Meet Lucy Section */
+.meet-lucy {
+  padding: 40px 0;
+  background-color: #f8f8f8;
+  border-radius: 30px;
+  margin: 40px 20px;
+}
+
+.meet-lucy .container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.lucy-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.lucy-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lucy-content {
+  flex: 1;
+}
+
+.lucy-content h2 {
+  font-size: 28px;
+  color: #7fb9b1;
+  margin-bottom: 10px;
+}
+
+.lucy-content p {
+  color: #555;
+  max-width: 600px;
+}
+
+.associations {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.association-logo {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 1px solid grey;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.association-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Quote Section */
+.quote {
+  padding: 60px 0;
+  text-align: center;
+}
+
+.quote h2 {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+/* Features Section */
+.features .container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 60px;
+}
+
+.feature {
+  background-color: #f9e9e9;
+  padding: 20px;
+  border-radius: 30px;
+  text-align: center;
+  flex: 1;
+}
+
+.feature h3 {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Services Section */
+.services {
+  padding: 60px 0;
+}
+
+.services h2 {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 40px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.service-card {
+  border: 1px solid #ddd;
+  padding: 30px 20px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.service-icon {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.service-card h3 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Footer */
+footer {
+  background-color: #7fb9b1;
+  color: #fff;
+  padding: 60px 0 20px;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.footer-info {
+  max-width: 400px;
+}
+
+.footer-info h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.footer-info p {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 60px;
+}
+
+.footer-column h4 {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.footer-column ul li {
+  margin-bottom: 10px;
+}
+
+.social-icons {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.social-icon {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  flex: 1;
+  width: 100%;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.flags {
+  display: flex;
+  gap: 10px;
+}
+
+.flag {
+  width: 40px;
+  height: 25px;
+  object-fit: cover;
+}
+
+.copyright {
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .hero .container {
+    flex-direction: column;
+  }
+
+  .hero-image {
+    width: 100%;
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .footer-info {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  header .container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  nav ul {
+    margin-top: 20px;
+  }
+
+  .features .container {
+    flex-wrap: wrap;
+  }
+
+  .feature {
+    flex-basis: 45%;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meet-lucy .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .lucy-image {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .associations {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-content h1 {
+    font-size: 32px;
+  }
+
+  .feature {
+    flex-basis: 100%;
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav ul li {
+    margin: 0 10px 10px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .flags {
+    justify-content: center;
+  }
+}

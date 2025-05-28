@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - CareerScopes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="login-page">
+    <!-- 🌟 Fullscreen Animated Background Video -->
+    <video autoplay muted loop id="bg-video">
+      <source src="images/animated-background.mp4" type="video/mp4" />
+      Your browser does not support HTML5 video.
+    </video>
+
+    <!-- 🌟 Login Form Container -->
+    <div class="container">
+      <div class="form-header">
+        <h2>Login</h2>
+      </div>
+
+      <form id="login-form">
+        <label for="email">Email Address*</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="password">Password*</label>
+        <input type="password" id="password" name="password" required />
+
+        <div class="forgot-link">
+          <a href="#">Forgot Password?</a>
+        </div>
+
+        <a
+          style="width: 100%; display: block; text-align: center"
+          type="submit"
+          class="login-btn"
+          href="./profile.html"
+          >Login</a
+        >
+      </form>
+
+      <p class="login-link">
+        Don't have an account? <a href="register.html">Register</a>
+      </p>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html>

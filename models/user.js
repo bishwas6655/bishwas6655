@@ -1,21 +1,26 @@
+// models/user.js
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt   = require('bcrypt');
 
-// Define User schema
 const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email:    { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role:     { type: String, enum: ['user', 'admin'], default: 'user' },
-  dateCreated: { type: Date, default: Date.now }
-});
+  phone:    { type: String },
+  services: { type: String },
+  state:    { type: String },
+}, { timestamps: true });
 
-// Auto-hash password before saving
-userSchema.pre('save', async function (next) {
+// before saving, hash password
+userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
-  this.password = await bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 
-// Export model
+// helper to compare password
+userSchema.methods.comparePassword = function(candidate) {
+  return bcrypt.compare(candidate, this.password);
+};
+
 module.exports = mongoose.model('User', userSchema);
