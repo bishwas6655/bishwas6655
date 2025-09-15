@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Psychometric Questionnaire - Step 2 | Career Scopes</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#eef8f6;
+      --text:#111827;
+      --muted:#6b7280;
+      --accent:#5acfbc;
+      --accent-strong:#48b0a0;
+      --stroke:#e5edeb;
+      --surface:#f8fbfb;
+      --radius:20px;
+      --radius-pill:26px;
+      --ring:0 0 0 3px rgba(90,207,188,.25);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    html, body { height:100%; }
+    body{
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:var(--bg);
+    }
+
+    .viewport{
+      height:100vh;
+      padding:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden; /* internal card scroll */
+    }
+
+    .q-stack{
+      width:min(1100px, 100%);
+      max-height:calc(100vh - 40px);
+      border-radius:var(--radius);
+      background:#fff;
+      box-shadow:0 10px 30px rgba(0,0,0,.1);
+      border:1px solid var(--stroke);
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .questionnaire-header{
+      position:sticky; top:0; z-index:5;
+      min-height:190px;
+      background:
+        linear-gradient(0deg, rgba(255,255,255,.85), rgba(255,255,255,.85)),
+        url('image.png') center/cover no-repeat;
+      display:flex; align-items:center; justify-content:center;
+      text-align:center;
+      padding:22px 24px;
+      border-bottom:1px solid var(--stroke);
+    }
+    .questionnaire-header .logo{
+      position:absolute; left:30px; top:22px;
+      height:110px; width:auto; object-fit:contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,.06));
+      user-select:none; pointer-events:none;
+    }
+    .title-wrap{ max-width:78% }
+    .header-title{
+      font-size:clamp(30px,3.8vw,44px);
+      font-weight:600; color:#152b28;
+      text-shadow:0 1px 0 rgba(255,255,255,.7);
+      line-height:1.12; margin-bottom:10px;
+    }
+    .header-step{ color:var(--accent); font-weight:700; font-size:14px }
+    .progress-rail{
+      height:8px; background:#e8f3f1; border-radius:999px; overflow:hidden;
+      width:min(560px,86%); margin:12px auto 0;
+    }
+    /* Step 2 = 66% */
+    .progress-bar{height:100%; width:66%; background:linear-gradient(90deg, var(--accent), #9be3d6)}
+
+    .questionnaire-container{ background:#fff; padding:30px 28px 28px }
+
+    /* Upload sections */
+    .upload-section { margin-bottom:30px; }
+    .upload-area{
+      border:2px dashed #d1ecf1;
+      border-radius:15px;
+      background-color:#f8f9fa;
+      padding:40px 20px;
+      text-align:center;
+      cursor:pointer;
+      transition:all .3s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .upload-area:hover{ border-color:var(--accent); background-color:#f0f8f7; }
+    .upload-area.dragover{ border-color:var(--accent); background-color:#e8f5f3; }
+
+    .upload-icon{ font-size:2rem; color:var(--accent); margin-bottom:15px; }
+    .upload-text{ color:#374151; font-size:1rem; margin-bottom:6px; font-weight:600 }
+    .upload-subtext{ color:#6b7280; font-size:.85rem; }
+
+    .file-input{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      opacity:0; cursor:pointer;
+    }
+
+    .file-list{ margin-top:15px }
+    .file-item{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 15px;
+      background-color:#e8f5f3;
+      border-radius:8px;
+      margin-bottom:8px;
+    }
+    .file-info{ display:flex; align-items:center; gap:10px }
+    .file-icon{ color:var(--accent) }
+    .file-name{ color:#111827; font-size:.95rem; font-weight:600 }
+    .file-size{ color:#6b7280; font-size:.85rem }
+
+    .remove-file{
+      background:none; border:none; color:#dc3545;
+      cursor:pointer; font-size:1.2rem; padding:5px; line-height:1;
+    }
+    .remove-file:hover{ color:#b42318 }
+
+    .navigation{
+      display:flex; justify-content:space-between; gap:12px;
+      margin-top:34px; padding-top:10px;
+    }
+    .nav-btn{
+      padding:12px 26px; border-radius:999px; border:2px solid var(--accent);
+      font-weight:700; cursor:pointer; transition:.15s transform,.15s background,.15s color,.15s border-color,.15s box-shadow;
+      background:#fff; color:var(--accent);
+    }
+    .nav-btn:hover{ transform:translateY(-1px); box-shadow:0 4px 12px rgba(90,207,188,.25) }
+    .btn-back{ background:#fff; }
+    .btn-next{ background:var(--accent); color:#0f2d29 }
+    .btn-next:hover{ background:var(--accent-strong); border-color:var(--accent-strong) }
+    .btn-next:disabled{ opacity:.6; cursor:not-allowed; filter:grayscale(.2); box-shadow:none; transform:none }
+
+    /* Basic form controls (to match Step 1) */
+    .form-control{
+      width:100%; padding:12px 15px; border:2px solid var(--stroke); border-radius:16px;
+      font-size:.95rem; transition:.15s border,.15s background,.15s box-shadow; background:var(--surface);
+    }
+    .form-control:hover{ border-color:#d8eeea }
+    .form-control:focus{ outline:none; border-color:var(--accent); background:#fff; box-shadow:var(--ring) }
+
+    #validationMsg[aria-live]{ min-height:1em; }
+    .limits-note{ margin:10px 0 6px; }
+    .group-title{ margin-bottom:8px; font-weight:600; color:#374151; }
+    .notes-area{ min-height:110px; resize:vertical; }
+    .error-text{ color:#b42318; }
+    .muted{ color:var(--muted); font-size:.85rem; }
+    
+    @media (max-width:900px){
+      .title-wrap{ max-width: 88% }
+      .questionnaire-header .logo{ height:96px; left:20px; top:20px }
+    }
+    @media (max-width:768px){
+      .questionnaire-header{ min-height:200px }
+      .questionnaire-header .logo{ height:88px }
+      .questionnaire-container{ padding:30px 20px }
+      .upload-area{ padding:30px 15px }
+    }
+  </style>
+</head>
+<body>
+  <div class="viewport">
+    <div class="q-stack" role="region" aria-label="Psychometric Questionnaire scroll area">
+      <!-- STICKY HEADER (matches Step 1) -->
+      <header class="questionnaire-header" role="banner" aria-label="Psychometric Questionnaire header">
+        <img class="logo" src="logo.png" alt="Career Scopes logo" onerror="this.style.display='none'">
+        <div class="title-wrap">
+          <div class="header-title">Psychometric&nbsp;Questionnaire</div>
+          <div class="header-step">Step 2 of 3 • Upload</div>
+          <div class="progress-rail" aria-hidden="true"><div class="progress-bar"></div></div>
+        </div>
+      </header>
+
+      <div class="questionnaire-container">
+        <form id="step2Form">
+          <!-- Resume -->
+          <div class="upload-section">
+            <div class="upload-area" onclick="document.getElementById('resumeInput').click()" aria-label="Upload Resume or CV">
+              <div class="upload-icon">📄</div>
+              <div class="upload-text">Upload Resume / CV</div>
+              <div class="upload-subtext">Click to browse or drag and drop</div>
+              <input type="file" id="resumeInput" class="file-input" accept=".pdf,.doc,.docx,.rtf,.odt" onchange="handleFileUpload(this, 'resume')">
+            </div>
+            <div class="file-list" id="resumeFiles"></div>
+          </div>
+
+          <!-- Certificates / Portfolio -->
+          <div class="upload-section">
+            <div class="upload-area" onclick="document.getElementById('certificatesInput').click()" aria-label="Upload Certificates or Portfolio">
+              <div class="upload-icon">🏆</div>
+              <div class="upload-text">Upload Certificates / Portfolio</div>
+              <div class="upload-subtext">Click to browse or drag and drop</div>
+              <input type="file" id="certificatesInput" class="file-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp" multiple onchange="handleFileUpload(this, 'certificates')">
+            </div>
+            <div class="file-list" id="certificatesFiles"></div>
+          </div>
+
+          <!-- Optional extras -->
+          <div class="upload-section">
+            <div class="upload-area" onclick="document.getElementById('extrasInput').click()" aria-label="Upload optional extras">
+              <div class="upload-icon">📎</div>
+              <div class="upload-text">Upload Optional Extras</div>
+              <div class="upload-subtext">Click to browse or drag and drop</div>
+              <input type="file" id="extrasInput" class="file-input" accept="*/*" multiple onchange="handleFileUpload(this, 'extras')">
+            </div>
+            <div class="file-list" id="extrasFiles"></div>
+          </div>
+
+          <!-- Optional links -->
+          <div class="upload-section">
+            <div class="group-title">Links (optional)</div>
+            <input class="form-control" id="linkLinkedIn" placeholder="LinkedIn URL (optional)" style="margin-bottom:10px;">
+            <input class="form-control" id="linkGithub" placeholder="GitHub URL (optional)" style="margin-bottom:10px;">
+            <input class="form-control" id="linkPortfolio" placeholder="Portfolio/Website URL (optional)">
+          </div>
+
+          <!-- Notes -->
+          <div class="upload-section">
+            <div class="group-title">Notes (optional)</div>
+            <textarea class="form-control notes-area" id="uploadNotes" placeholder="E.g., which file is most up-to-date, or context for a certificate"></textarea>
+          </div>
+
+          <!-- Limits + consent -->
+          <p id="limitsNote" class="upload-subtext limits-note">
+            Max <strong>10&nbsp;MB</strong> per file, <strong>25&nbsp;MB</strong> total. Allowed: PDF, DOC/DOCX, PNG/JPG/WebP.
+          </p>
+          <label style="display:flex;gap:10px;align-items:flex-start;margin-top:6px;">
+            <input type="checkbox" id="consentChk" style="margin-top:3px;">
+            <span class="upload-subtext" style="color:#374151">
+              I agree to share these documents for assessment purposes and confirm I have the right to upload them.
+            </span>
+          </label>
+          <p id="validationMsg" class="upload-subtext error-text" aria-live="polite" style="display:none;margin-top:6px;"></p>
+
+          <!-- Nav -->
+          <div class="navigation">
+            <button type="button" class="nav-btn btn-back" id="backBtn">Back</button>
+            <button type="submit" class="nav-btn btn-next" id="nextBtn">Next</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- State ---
+    let uploadedFiles = { resume: [], certificates: [], extras: [] };
+
+    // --- Limits/validation constants ---
+    const MAX_PER_FILE = 10 * 1024 * 1024;   // 10 MB
+    const MAX_TOTAL    = 25 * 1024 * 1024;   // 25 MB
+    const ALLOWED_EXTS = /\.(pdf|doc|docx|png|jpe?g|webp|rtf|odt)$/i;
+
+    // --- Elements ---
+    const nextBtn = document.getElementById('nextBtn');
+    const consentChk = document.getElementById('consentChk');
+    const validationMsg = document.getElementById('validationMsg');
+
+    // --- Back behavior (align with Step 1) ---
+    document.getElementById('backBtn').addEventListener('click', ()=>{
+      window.location.href = 'psychometric-step1.html';
+    });
+
+    // --- Helpers ---
+    function totalBytes() {
+      return ['resume','certificates','extras']
+        .flatMap(k => uploadedFiles[k])
+        .reduce((sum, f) => sum + (f.size || 0), 0);
+    }
+    function showError(msg) {
+      validationMsg.textContent = msg;
+      validationMsg.style.display = 'block';
+    }
+    function clearError() {
+      validationMsg.textContent = '';
+      validationMsg.style.display = 'none';
+    }
+
+    function validateFile(file) {
+      const name = (file.name || '').toLowerCase();
+      if (!ALLOWED_EXTS.test(name)) {
+        showError(`Unsupported file type for "${file.name}". Allowed: PDF, DOC/DOCX, PNG/JPG/WebP, RTF, ODT.`);
+        return false;
+      }
+      if ((file.size || 0) > MAX_PER_FILE) {
+        showError(`"${file.name}" exceeds the 10 MB per-file limit.`);
+        return false;
+      }
+      if (totalBytes() + (file.size || 0) > MAX_TOTAL) {
+        showError(`Adding "${file.name}" would exceed the 25 MB total limit.`);
+        return false;
+      }
+      return true;
+    }
+
+    function updateNextEnabled() {
+      nextBtn.disabled = !consentChk.checked;
+    }
+    consentChk.addEventListener('change', updateNextEnabled);
+    updateNextEnabled();
+
+    // --- Upload handlers ---
+    function handleFileUpload(input, category) {
+      clearError();
+      const files = Array.from(input.files);
+
+      for (const file of files) {
+        if (!validateFile(file)) { input.value=''; return; }
+        if (category === 'resume') {
+          uploadedFiles.resume = [file]; // single resume only
+        } else {
+          uploadedFiles[category].push(file);
+        }
+      }
+      displayFiles(category);
+      input.value = ''; // allow re-selecting same file
+    }
+
+    function displayFiles(category) {
+      const container = document.getElementById(category + 'Files');
+      container.innerHTML = '';
+      uploadedFiles[category].forEach((file, index) => {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+        fileItem.innerHTML = `
+          <div class="file-info">
+            <span class="file-icon">${getFileIcon(file)}</span>
+            <div>
+              <div class="file-name">${file.name}</div>
+              <div class="file-size">${formatFileSize(file.size)}</div>
+            </div>
+          </div>
+          <button type="button" class="remove-file" aria-label="Remove file" onclick="removeFile('${category}', ${index})">×</button>
+        `;
+        container.appendChild(fileItem);
+      });
+    }
+
+    function removeFile(category, index) {
+      uploadedFiles[category].splice(index, 1);
+      displayFiles(category);
+      clearError();
+    }
+
+    function getFileIcon(file) {
+      const name = (file.name || '').toLowerCase();
+      const type = (file.type || '').toLowerCase();
+      if (type.includes('pdf') || name.endsWith('.pdf')) return '📄';
+      if (type.includes('image') || /\.(png|jpe?g|webp|gif)$/i.test(name)) return '🖼️';
+      if (/(msword|officedocument\.wordprocessingml|rtf|odt)/.test(type) || /\.(doc|docx|rtf|odt)$/i.test(name)) return '📝';
+      return '📎';
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Drag & drop (with validation)
+    document.querySelectorAll('.upload-area').forEach(area => {
+      area.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('dragover');
+      });
+      area.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+      });
+      area.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        clearError();
+
+        const files = Array.from(e.dataTransfer.files);
+        const category = this.querySelector('input').id.replace('Input', '');
+
+        for (const file of files) {
+          if (!validateFile(file)) return;
+          if (category === 'resume') { uploadedFiles.resume = [file]; }
+          else { uploadedFiles[category].push(file); }
+        }
+        displayFiles(category);
+      });
+    });
+
+    // Submit -> save metadata -> go to Step 3 (gated on consent)
+    document.getElementById('step2Form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      clearError();
+
+      if (!consentChk.checked) { showError('Please provide consent to continue.'); return; }
+
+      const fileData = {
+        resume: uploadedFiles.resume.map(f => ({ name: f.name, size: f.size, type: f.type })),
+        certificates: uploadedFiles.certificates.map(f => ({ name: f.name, size: f.size, type: f.type })),
+        extras: uploadedFiles.extras.map(f => ({ name: f.name, size: f.size, type: f.type })),
+        links: {
+          linkedin: document.getElementById('linkLinkedIn')?.value?.trim() || '',
+          github: document.getElementById('linkGithub')?.value?.trim() || '',
+          portfolio: document.getElementById('linkPortfolio')?.value?.trim() || ''
+        },
+        notes: document.getElementById('uploadNotes')?.value?.trim() || ''
+      };
+
+      localStorage.setItem('psychometricStep2', JSON.stringify(fileData));
+      window.location.href = 'psychometric-step3.html';
+    });
+
+    // Refresh behavior: simple — remove saved step2 data on reload
+    window.addEventListener('load', function() {
+      const navEntry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+      const isReload = navEntry ? navEntry.type === 'reload'
+                                : (performance.navigation && performance.navigation.type === 1);
+      if (isReload) {
+        localStorage.removeItem('psychometricStep2');
+      }
+    });
+  </script>
+  <script src="main.js"></script>
+</body>
+</html>

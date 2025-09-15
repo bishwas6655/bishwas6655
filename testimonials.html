@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testimonials</title>
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <style>
+      main container {
+        display: block;
+        max-width: 100vw;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      main container video {
+        position: absolute;
+        object-fit: cover;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        inset: 0;
+      }
+
+      section {
+        margin-top: 5rem;
+      }
+
+      .header {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 2rem;
+        max-width: 600px;
+        margin-inline: auto;
+        font-weight: bold;
+        color: #2a7c7c;
+      }
+
+      .testimonial-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem;
+      }
+
+      .speech-bubble {
+        position: relative;
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid #4aa5a5;
+        border-radius: 20px;
+        padding: 1.5rem;
+        max-width: 350px;
+        width: 100%;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #034343;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        min-height: 180px;
+        overflow-wrap: break-word;
+      }
+
+      /* Removed the speech tail arrow */
+      /* .speech-bubble::after {
+        content: "";
+        position: absolute;
+        bottom: -20px;
+        left: 40px;
+        width: 0;
+        height: 0;
+        border: 20px solid transparent;
+        border-top-color: #4aa5a5;
+      } */
+
+      .speech-bubble span {
+        display: block;
+        margin-top: 1rem;
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: #076d6d;
+      }
+
+      @media (max-width: 768px) {
+        .speech-bubble {
+          max-width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <container>
+        <header style="position: unset">
+          <div class="container">
+            <div class="logo">
+              <a href="./index.html">
+                <img src="./images/logo_white.png" alt="careerScops" />
+              </a>
+            </div>
+            <nav>
+              <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./about-us.html">About us</a></li>
+                <li><a href="./testimonials.html" class="active">Testimonials</a></li>
+                <li><a href="./contact-us.html">Contact Us</a></li>
+              </ul>
+            </nav>
+            <div class="auth-buttons">
+              <a href="./login.html" class="login-btn">Login</a>
+              <a href="./register.html" class="register-btn">Register</a>
+            </div>
+          </div>
+        </header>
+        <video autoplay muted loop onloadstart="this.playbackRate = 0.25;">
+          <source src="./images/animated-background.mp4" type="video/mp4" />
+        </video>
+        <div class="caption">
+          <section>
+            <div class="header">What we’ve heard on the grapevine…</div>
+            <div class="testimonial-grid">
+              <div class="speech-bubble">
+                Lucy Vardari played an integral role during my job application process. My resume was outdated and disorganised, but she took the time to guide me through how to present myself, my skills and my intentions effectively. Through this process and with her help in clarifying what I truly wanted, I was able to create a resume that authentically reflected my goals and what I have to offer. But she didn’t just help me write a resume; she helped me understand and articulate my own strengths in a way I hadn’t done before. That insight gave me a new level of confidence as I applied for roles. I couldn’t be more grateful for her time, professionalism, and genuine dedication to helping me move forward on my path.
+                <span>- Julia Tucker</span>
+              </div>
+              <div class="speech-bubble">
+                I cannot recommend Career Scopes enough. Lucy supported and empowered me through a difficult time when I involuntarily transitioned into a career that I no longer enjoyed. Her creative approach encouraged me to think outside the box and explore careers which I would have never considered in the past. I particularly appreciated how her positive enthusiasm motivated and inspired me to find a job that I now truly love.
+                <span>- Lucie Kensworth</span>
+              </div>
+              <div class="speech-bubble">
+                When I needed help formatting and constructing an effective resume whilst still at uni, Lucy was the person I could go to. I had gained further knowledge on how to professionally write up a resume, as well as making it look visually appealing and unique, all thanks to Lucy’s help. Furthermore, finding a career that was best suited for me was easily achievable with the support of her guidance. While unpacking my Morrisby results, I was able to have a clear and better understanding at the different options of careers and how to get to those desired jobs through her direction.
+                <span>- Dalia Tucker</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </container>
+    </main>
+  </body>
+</html>

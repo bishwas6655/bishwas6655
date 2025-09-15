@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Psychometric Questionnaire - Step 1 | Career Scopes</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#eef8f6;
+    --text:#111827;
+    --muted:#6b7280;
+    --accent:#5acfbc;
+    --accent-strong:#48b0a0;
+    --stroke:#e5edeb;
+    --surface:#f8fbfb;
+    --radius:20px;
+    --radius-pill:26px;
+    --ring:0 0 0 3px rgba(90,207,188,.25);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  html, body { height:100%; }
+  body{
+    font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    background:var(--bg);
+  }
+
+  .viewport{
+    height:100vh;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden; /* internal card scroll */
+  }
+
+  .q-stack{
+    width:min(1100px, 100%);
+    max-height:calc(100vh - 40px);
+    border-radius:var(--radius);
+    background:#fff;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+    border:1px solid var(--stroke);
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .questionnaire-header{
+    position:sticky; top:0; z-index:5;
+    min-height:190px;
+    background:
+      linear-gradient(0deg, rgba(255,255,255,.85), rgba(255,255,255,.85)),
+      url('image.png') center/cover no-repeat;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    padding:22px 24px;
+    border-bottom:1px solid var(--stroke);
+  }
+  .questionnaire-header .logo{
+    position:absolute; left:30px; top:22px;
+    height:110px; width:auto; object-fit:contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.06));
+    user-select:none; pointer-events:none;
+  }
+  .title-wrap{ max-width:78% }
+  .header-title{
+    font-family:Inter, sans-serif; /* simple title font */
+    font-size:clamp(30px,3.8vw,44px);
+    font-weight:600; color:#152b28;
+    text-shadow:0 1px 0 rgba(255,255,255,.7);
+    line-height:1.12; margin-bottom:10px;
+  }
+  .header-step{ color:var(--accent); font-weight:700; font-size:14px }
+  .progress-rail{
+    height:8px; background:#e8f3f1; border-radius:999px; overflow:hidden;
+    width:min(560px,86%); margin:12px auto 0;
+  }
+  .progress-bar{height:100%; width:33%; background:linear-gradient(90deg, var(--accent), #9be3d6)}
+
+  .questionnaire-container{ background:#fff; padding:30px 28px 28px }
+
+  .form-section{ margin-bottom:28px }
+  .section-number{ color:var(--accent); font-size:.92rem; font-weight:700; margin-bottom:6px }
+  .section-title{ color:#111827; font-size:1rem; font-weight:700; margin-bottom:12px }
+  .req-badge{ color:#d14343; margin-left:6px; font-weight:800 }
+
+  .form-control{
+    width:100%; padding:12px 15px; border:2px solid var(--stroke); border-radius:16px;
+    font-size:.95rem; transition:.15s border,.15s background,.15s box-shadow; background:var(--surface);
+  }
+  .form-control:hover{ border-color:#d8eeea }
+  .form-control:focus{ outline:none; border-color:var(--accent); background:#fff; box-shadow:var(--ring) }
+
+  .hint{ color:var(--muted); font-size:.85rem; margin-top:6px }
+
+  .radio-group{ display:flex; gap:12px; flex-wrap:wrap }
+  .radio-option{ position:relative; transform:translateZ(0) }
+  .radio-option input[type="radio"]{ position:absolute; inset:0; opacity:0; cursor:pointer }
+  .radio-option label{
+    display:block; padding:10px 18px; border:2px solid var(--stroke);
+    border-radius:var(--radius-pill); background:#fff; color:#374151; cursor:pointer;
+    transition:.15s border,.15s background,.15s color,.15s box-shadow,.15s transform; font-size:.95rem;
+    user-select:none;
+  }
+  .radio-option label:hover{ border-color:#d8eeea; transform:translateY(-1px) }
+  .radio-option input[type="radio"]:focus-visible + label{ box-shadow:var(--ring) }
+  .radio-option input[type="radio"]:checked + label{ border-color:var(--accent); background:#eaf8f5; color:#114a43 }
+
+  .checkbox-group{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
+  .checkbox-option{ position:relative }
+  .checkbox-option input[type="checkbox"]{ position:absolute; inset:0; opacity:0; cursor:pointer }
+  .checkbox-option label{
+    display:block; padding:12px 15px; border:2px solid var(--stroke);
+    border-radius:var(--radius-pill); background:#fff; color:#374151; cursor:pointer;
+    transition:.15s border,.15s background,.15s color,.15s box-shadow,.15s transform; font-size:.95rem; text-align:center;
+    user-select:none;
+  }
+  .checkbox-option label:hover{ border-color:#d8eeea; transform:translateY(-1px) }
+  .checkbox-option input[type="checkbox"]:focus-visible + label{ box-shadow:var(--ring) }
+  .checkbox-option input[type="checkbox"]:checked + label{ border-color:var(--accent); background:#eaf8f5; color:#114a43 }
+
+  textarea.form-control{ min-height:120px; resize:vertical; border-radius:16px }
+
+  .charrow{ display:flex; justify-content:space-between; align-items:center; margin-top:6px }
+  .charrow .count{ font-size:.82rem; color:var(--muted) }
+
+  .navigation{ display:flex; justify-content:space-between; gap:12px; margin-top:34px; padding-top:10px }
+  .nav-btn{
+    padding:12px 26px; border-radius:999px; border:2px solid var(--accent);
+    font-weight:700; cursor:pointer; transition:.15s transform,.15s background,.15s color,.15s border-color,.15s box-shadow;
+    background:#fff; color:var(--accent);
+  }
+  .nav-btn:hover{ transform:translateY(-1px); box-shadow:0 4px 12px rgba(90,207,188,.25) }
+  .btn-next{ background:var(--accent); color:#0f2d29 }
+  .btn-next:hover{ background:var(--accent-strong); border-color:var(--accent-strong) }
+  .btn-next:disabled{ opacity:.6; cursor:not-allowed; filter:grayscale(.2); box-shadow:none; transform:none }
+
+  .error{ color:#d14343; font-size:.9rem; margin-top:6px; display:none }
+  .field-error{ display:none; color:#b42318; font-size:.86rem; margin-top:6px }
+
+  .divider{ height:1px; background:var(--stroke); margin:18px 0 }
+
+  @media (max-width:900px){
+    .title-wrap{ max-width: 88% }
+    .questionnaire-header .logo{ height:96px; left:20px; top:20px }
+  }
+  @media (max-width:768px){
+    .checkbox-group{ grid-template-columns:1fr }
+    .radio-group{ flex-direction:column }
+    .questionnaire-header{ min-height:200px }
+    .questionnaire-header .logo{ height:88px }
+  }
+</style>
+</head>
+<body>
+
+  <div class="viewport">
+    <div class="q-stack" role="region" aria-label="Psychometric Questionnaire scroll area">
+      <!-- STICKY HEADER -->
+      <header class="questionnaire-header" role="banner" aria-label="Psychometric Questionnaire header">
+        <img class="logo" src="logo.png" alt="Career Scopes logo" onerror="this.style.display='none'">
+        <div class="title-wrap">
+          <div class="header-title">Psychometric&nbsp;Questionnaire</div>
+          <div class="header-step">Step 1 of 3 • Career</div>
+          <div class="progress-rail" aria-hidden="true"><div class="progress-bar"></div></div>
+        </div>
+      </header>
+
+      <!-- FORM CONTENT (SCROLLS UNDER HEADER) -->
+      <div class="questionnaire-container">
+        <form id="step1Form" novalidate>
+          <!-- 1. Career Interest -->
+          <div class="form-section" id="sec-careerInterest">
+            <div class="section-number">1. Career Interest</div>
+            <div class="section-title">What field interests you most? <span class="req-badge" aria-hidden="true">*</span></div>
+            <select class="form-control" name="careerInterest" required aria-describedby="careerInterestHint">
+              <option value="">Select field</option>
+              <option value="technology">Information Technology</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="finance">Finance</option>
+              <option value="education">Education</option>
+              <option value="marketing">Marketing</option>
+              <option value="engineering">Engineering</option>
+              <option value="arts">Creative Arts</option>
+              <option value="science">Science</option>
+              <option value="business">Business</option>
+              <option value="other">Other</option>
+            </select>
+            <p id="careerInterestHint" class="hint">Choose the area you’re most curious about right now.</p>
+            <div class="field-error" data-error-for="careerInterest">Please select a field.</div>
+          </div>
+
+          <!-- 2. Skills Confidence -->
+          <div class="form-section" id="sec-skillsConfidence">
+            <div class="section-number">2. Skills Confidence</div>
+            <div class="section-title">How confident are you in your current skills? <span class="req-badge">*</span></div>
+            <div class="radio-group" role="radiogroup" aria-label="Skills confidence">
+              <div class="radio-option">
+                <input type="radio" id="confidence-low" name="skillsConfidence" value="low" required>
+                <label for="confidence-low">Low</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="confidence-medium" name="skillsConfidence" value="medium">
+                <label for="confidence-medium">Medium</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="confidence-high" name="skillsConfidence" value="high">
+                <label for="confidence-high">High</label>
+              </div>
+            </div>
+            <div class="field-error" data-error-for="skillsConfidence">Please choose one option.</div>
+          </div>
+
+          <!-- 3. Work Environment Preference -->
+          <div class="form-section" id="sec-workEnv">
+            <div class="section-number">3. Work Environment Preference</div>
+            <div class="section-title">What work environment do you prefer? <span class="req-badge">*</span></div>
+            <div class="radio-group" role="radiogroup" aria-label="Work environment">
+              <div class="radio-option">
+                <input type="radio" id="env-office" name="workEnvironment" value="office" required>
+                <label for="env-office">Office</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="env-remote" name="workEnvironment" value="remote">
+                <label for="env-remote">Remote</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="env-hybrid" name="workEnvironment" value="hybrid">
+                <label for="env-hybrid">Hybrid</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="env-field" name="workEnvironment" value="field">
+                <label for="env-field">Field</label>
+              </div>
+            </div>
+            <div class="field-error" data-error-for="workEnvironment">Please choose one option.</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- 5. Education -->
+          <div class="form-section" id="sec-education">
+            <div class="section-number">5. Education</div>
+            <div class="section-title">What is your highest completed education? <span class="req-badge">*</span></div>
+            <select class="form-control" name="education" required>
+              <option value="">Select level</option>
+              <option value="highschool">High School</option>
+              <option value="certificate">Certificate/Diploma</option>
+              <option value="bachelor">Bachelor’s</option>
+              <option value="masters">Master’s</option>
+              <option value="doctorate">Doctorate</option>
+              <option value="other">Other</option>
+            </select>
+            <div class="field-error" data-error-for="education">Please select your education level.</div>
+          </div>
+
+          <!-- 6. Experience -->
+          <div class="form-section" id="sec-experience">
+            <div class="section-number">6. Experience</div>
+            <div class="section-title">How many years of relevant experience do you have? <span class="req-badge">*</span></div>
+            <select class="form-control" name="experience" required>
+              <option value="">Select range</option>
+              <option value="0-1">0–1 years</option>
+              <option value="1-3">1–3 years</option>
+              <option value="3-5">3–5 years</option>
+              <option value="5-8">5–8 years</option>
+              <option value="8+">8+ years</option>
+            </select>
+            <div class="field-error" data-error-for="experience">Please select your experience range.</div>
+          </div>
+
+          <!-- 7. Target Roles -->
+          <div class="form-section" id="sec-roles">
+            <div class="section-number">7. Target Roles</div>
+            <div class="section-title">Which role types are you interested in? <span class="req-badge">*</span></div>
+            <div class="checkbox-group" data-required-min="1" data-name="desiredRoles">
+              <div class="checkbox-option">
+                <input type="checkbox" id="role-analyst" name="desiredRoles" value="analyst">
+                <label for="role-analyst">Analyst</label>
+              </div>
+              <div class="checkbox-option">
+                <input type="checkbox" id="role-developer" name="desiredRoles" value="developer">
+                <label for="role-developer">Developer</label>
+              </div>
+              <div class="checkbox-option">
+                <input type="checkbox" id="role-designer" name="desiredRoles" value="designer">
+                <label for="role-designer">Designer</label>
+              </div>
+              <div class="checkbox-option">
+                <input type="checkbox" id="role-manager" name="desiredRoles" value="manager">
+                <label for="role-manager">Manager</label>
+              </div>
+            </div>
+            <div class="field-error" data-error-for="desiredRoles">Select at least one role.</div>
+          </div>
+
+          <!-- 8. Skills to Grow -->
+          <div class="form-section" id="sec-skills">
+            <div class="section-number">8. Skills to Grow</div>
+            <div class="section-title">Which areas would you like to develop next? <span class="req-badge">*</span></div>
+            <div class="checkbox-group" data-required-min="1" data-name="growthAreas">
+              <div class="checkbox-option">
+                <input type="checkbox" id="grow-tech" name="growthAreas" value="technical">
+                <label for="grow-tech">Technical</label>
+              </div>
+              <div class="checkbox-option">
+                <input type="checkbox" id="grow-communication" name="growthAreas" value="communication">
+                <label for="grow-communication">Communication</label>
+              </div>
+              <div class="checkbox-option">
+                <input type="checkbox" id="grow-leadership" name="growthAreas" value="leadership">
+                <label for="grow-leadership">Leadership</label>
+              </div>
+              <div class="checkbox-option">
+                <input type="checkbox" id="grow-analytics" name="growthAreas" value="analytics">
+                <label for="grow-analytics">Analytics</label>
+              </div>
+            </div>
+            <div class="field-error" data-error-for="growthAreas">Select at least one area.</div>
+          </div>
+
+          <!-- 9. Salary Expectation -->
+          <div class="form-section" id="sec-salary">
+            <div class="section-number">9. Salary Expectation</div>
+            <div class="section-title">What is your indicative salary expectation? <span class="req-badge">*</span></div>
+            <select class="form-control" name="salaryRange" required>
+              <option value="">Select range</option>
+              <option value="entry">Entry-level / Open to discuss</option>
+              <option value="40-60">40k – 60k</option>
+              <option value="60-80">60k – 80k</option>
+              <option value="80-100">80k – 100k</option>
+              <option value="100+">100k+</option>
+            </select>
+            <div class="field-error" data-error-for="salaryRange">Please choose a range.</div>
+          </div>
+
+          <!-- 10. Availability -->
+          <div class="form-section" id="sec-availability">
+            <div class="section-number">10. Availability</div>
+            <div class="section-title">When could you start a new role? <span class="req-badge">*</span></div>
+            <select class="form-control" name="availability" required>
+              <option value="">Select</option>
+              <option value="immediately">Immediately</option>
+              <option value="2-weeks">In 2 weeks</option>
+              <option value="1-month">In 1 month</option>
+              <option value="flexible">Flexible</option>
+            </select>
+            <div class="field-error" data-error-for="availability">Please select availability.</div>
+          </div>
+
+          <!-- 11. About you -->
+          <div class="form-section" id="sec-about">
+            <div class="section-number">11. Tell us about yourself</div>
+            <div class="section-title">Share any additional information about your career goals <span class="req-badge">*</span></div>
+            <textarea class="form-control" name="additionalInfo" maxlength="500" required placeholder="Tell us more about your aspirations, challenges, or specific goals..."></textarea>
+            <div class="charrow">
+              <span class="hint">Up to 500 characters.</span>
+              <span class="count" id="charCount">0 / 500</span>
+            </div>
+            <div class="field-error" data-error-for="additionalInfo">Please add a short note (a few words is fine).</div>
+          </div>
+
+          <p id="err-global" class="error" aria-live="polite">Please complete the required questions highlighted below.</p>
+
+          <div class="navigation">
+            <button type="button" class="nav-btn btn-back" id="backBtn">Back</button>
+            <button type="submit" class="nav-btn btn-next" id="nextBtn">Next</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const form = document.getElementById('step1Form');
+  const nextBtn = document.getElementById('nextBtn');
+
+  // Back with fallback
+  document.getElementById('backBtn').addEventListener('click', ()=>{
+  if (history.length > 1) history.back();
+  else window.location.href = 'register.html';
+});
+
+
+  // Character counter
+  const aboutEl = form.elements['additionalInfo'];
+  const charCount = document.getElementById('charCount');
+  const updateCount = () => {
+    charCount.textContent = `${aboutEl.value.length} / ${aboutEl.maxLength}`;
+  };
+  aboutEl.addEventListener('input', updateCount); updateCount();
+
+  function toggleFieldError(name, show) {
+    const errEl = document.querySelector(`.field-error[data-error-for="${name}"]`);
+    if(!errEl) return;
+    errEl.style.display = show ? 'block' : 'none';
+  }
+
+  function validateGroups(showErrors = true) {
+    let ok = true;
+    document.querySelectorAll('.checkbox-group[data-required-min]').forEach(group=>{
+      const min = parseInt(group.getAttribute('data-required-min') || '1', 10);
+      const name = group.getAttribute('data-name');
+      const checked = group.querySelectorAll('input[type="checkbox"]:checked').length;
+      const valid = checked >= min;
+      if (showErrors) toggleFieldError(name, !valid);
+      if(!valid) ok = false;
+    });
+    return ok;
+  }
+
+  function validateNative(showErrors = true) {
+    let ok = true;
+    // Removed "personality" as there is no such field in this form
+    const fields = ['careerInterest','skillsConfidence','workEnvironment','education','experience','salaryRange','availability','additionalInfo'];
+    if (showErrors) fields.forEach(n=>toggleFieldError(n, false));
+
+    if(!form.careerInterest.value){ if(showErrors) toggleFieldError('careerInterest', true); ok = false; }
+    if(!form.skillsConfidence.value){ if(showErrors) toggleFieldError('skillsConfidence', true); ok = false; }
+    if(!form.workEnvironment.value){ if(showErrors) toggleFieldError('workEnvironment', true); ok = false; }
+    if(!form.education.value){ if(showErrors) toggleFieldError('education', true); ok = false; }
+    if(!form.experience.value){ if(showErrors) toggleFieldError('experience', true); ok = false; }
+    if(!form.salaryRange.value){ if(showErrors) toggleFieldError('salaryRange', true); ok = false; }
+    if(!form.availability.value){ if(showErrors) toggleFieldError('availability', true); ok = false; }
+    if(!form.additionalInfo.value.trim()){ if(showErrors) toggleFieldError('additionalInfo', true); ok = false; }
+    return ok;
+  }
+
+  function recomputeNextEnabled(silent = false) {
+    const nativeOK = validateNative(!silent);
+    const groupsOK = validateGroups(!silent);
+    nextBtn.disabled = !(nativeOK && groupsOK);
+  }
+
+  const globalErr = document.getElementById('err-global');
+  if (globalErr) globalErr.style.display = 'none';
+
+  form.addEventListener('input', (e)=>{
+    const t = e.target;
+    if(t.name){ toggleFieldError(t.name, false); }
+    if(t.type === 'checkbox'){
+      const group = t.closest('.checkbox-group');
+      if(group){
+        const name = group.getAttribute('data-name');
+        const min = parseInt(group.getAttribute('data-required-min')||'1',10);
+        const checked = group.querySelectorAll('input[type="checkbox"]:checked').length;
+        toggleFieldError(name, !(checked>=min));
+      }
+    }
+    recomputeNextEnabled(false);
+  });
+
+  form.addEventListener('submit', function(e){
+    if (globalErr) globalErr.style.display = 'none';
+
+    const nativeOK = validateNative(true);
+    const groupsOK = validateGroups(true);
+    const allOK = nativeOK && groupsOK;
+
+    if(!allOK){
+      e.preventDefault();
+      if (globalErr) globalErr.style.display='block';
+      const firstErr = document.querySelector('.field-error[style*="block"]');
+      if(firstErr){
+        firstErr.previousElementSibling?.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+      return;
+    }
+    e.preventDefault();
+
+    const fd = new FormData(form);
+    const data = {};
+    for (const [k,v] of fd.entries()){
+      if (data[k]) data[k] = [].concat(data[k], v);
+      else data[k]=v;
+    }
+    ['desiredRoles','growthAreas'].forEach(n=>{
+      const arr = [...form.querySelectorAll(`input[name="${n}"]:checked`)].map(i=>i.value);
+      data[n] = arr;
+    });
+
+    localStorage.setItem('psychometricStep1', JSON.stringify(data));
+    window.location.href = 'psychometric-step2.html';
+  });
+
+  // On load, only restore answers if we are returning via Back/Forward,
+  // but clear them if this page load is a Reload.
+  window.addEventListener('load', ()=>{
+    // Detect navigation type (modern + fallback)
+    let navType = 'navigate';
+    const navEntry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    if (navEntry && navEntry.type) {
+      navType = navEntry.type; // 'navigate' | 'reload' | 'back_forward' | 'prerender'
+    } else if (performance.navigation) {
+      // Deprecated fallback
+      navType = performance.navigation.type === 1 ? 'reload'
+              : performance.navigation.type === 2 ? 'back_forward'
+              : 'navigate';
+    }
+
+    if (navType === 'reload') {
+      // Clear saved selections on refresh
+      localStorage.removeItem('psychometricStep1');
+      form.reset();
+      updateCount();
+      recomputeNextEnabled(true); // silent
+      return;
+    }
+
+    // Otherwise (initial navigate or back/forward), restore if present
+    const saved = localStorage.getItem('psychometricStep1');
+    if(!saved) { recomputeNextEnabled(true); return; }
+
+    const data = JSON.parse(saved);
+    Object.keys(data).forEach(key=>{
+      const val = data[key];
+      const inputs = document.querySelectorAll(`[name="${key}"]`);
+      if(!inputs.length) return;
+
+      const first = inputs[0];
+      if(first.type==='radio' || first.type==='checkbox'){
+        const values = Array.isArray(val) ? val : [val];
+        values.forEach(v=>{
+          const opt = document.querySelector(`input[name="${key}"][value="${v}"]`);
+          if(opt) opt.checked = true;
+        });
+      } else if (first.tagName==='SELECT'){
+        first.value = val;
+      } else {
+        first.value = val;
+      }
+    });
+
+    if(aboutEl) aboutEl.dispatchEvent(new Event('input'));
+    recomputeNextEnabled(false);
+  });
+</script>
+<script src="main.js"></script>
+</body>
+</html>

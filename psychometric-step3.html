@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Psychometric Questionnaire - Step 3 | Career Scopes</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#eef8f6;
+      --text:#111827;
+      --muted:#6b7280;
+      --accent:#5acfbc;
+      --accent-strong:#48b0a0;
+      --stroke:#e5edeb;
+      --surface:#f8fbfb;
+      --radius:20px;
+      --radius-pill:26px;
+      --ring:0 0 0 3px rgba(90,207,188,.25);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    html, body { height:100%; }
+    body{
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:var(--bg);
+    }
+
+    .viewport{
+      height:100vh;
+      padding:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    .q-stack{
+      width:min(1100px, 100%);
+      max-height:calc(100vh - 40px);
+      border-radius:var(--radius);
+      background:#fff;
+      box-shadow:0 10px 30px rgba(0,0,0,.1);
+      border:1px solid var(--stroke);
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    /* Sticky header (matches Steps 1 & 2) */
+    .questionnaire-header{
+      position:sticky; top:0; z-index:5;
+      min-height:190px;
+      background:
+        linear-gradient(0deg, rgba(255,255,255,.85), rgba(255,255,255,.85)),
+        url('image.png') center/cover no-repeat;
+      display:flex; align-items:center; justify-content:center;
+      text-align:center;
+      padding:22px 24px;
+      border-bottom:1px solid var(--stroke);
+    }
+    .questionnaire-header .logo{
+      position:absolute; left:30px; top:22px;
+      height:110px; width:auto; object-fit:contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,.06));
+      user-select:none; pointer-events:none;
+    }
+    .title-wrap{ max-width:78% }
+    .header-title{
+      font-size:clamp(30px,3.8vw,44px);
+      font-weight:600; color:#152b28;
+      text-shadow:0 1px 0 rgba(255,255,255,.7);
+      line-height:1.12; margin-bottom:10px;
+    }
+    .header-step{ color:var(--accent); font-weight:700; font-size:14px }
+    .progress-rail{
+      height:8px; background:#e8f3f1; border-radius:999px; overflow:hidden;
+      width:min(560px,86%); margin:12px auto 0;
+    }
+    /* Step 3 = 100% */
+    .progress-bar{height:100%; width:100%; background:linear-gradient(90deg, var(--accent), #9be3d6)}
+
+    .questionnaire-container{ background:#fff; padding:30px 28px 28px }
+
+    /* Grid & cards */
+    .page-grid{
+      display:grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap:24px;
+      align-items:start;
+    }
+    @media (max-width:980px){
+      .page-grid{ grid-template-columns:1fr; }
+    }
+
+    .section-title{
+      color:#111827; font-size:1rem; font-weight:700; margin-bottom:12px;
+    }
+    .muted{ color:var(--muted); font-size:.9rem; }
+
+    .services-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width:640px){
+      .services-grid{ grid-template-columns:1fr; }
+    }
+
+    .service-option{ position:relative; }
+    .service-option input[type="checkbox"]{ position:absolute; inset:0; opacity:0; cursor:pointer; }
+    .service-card{
+      display:block; padding:16px;
+      border:2px solid var(--stroke);
+      border-radius:15px;
+      background-color:#f8f9fa;
+      cursor:pointer; transition:.15s border,.15s background,.15s transform,.15s box-shadow;
+      text-align:left;
+    }
+    .service-card:hover{ border-color:#d8eeea; background:#f0f8f7; transform:translateY(-1px) }
+    .service-option input[type="checkbox"]:focus-visible + .service-card{ box-shadow:var(--ring) }
+    .service-option input[type="checkbox"]:checked + .service-card{ border-color:var(--accent); background:#e8f5f3 }
+
+    .service-head{ display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .service-icon{ font-size:1.2rem }
+    .service-title{ color:#111827; font-size:1rem; font-weight:700 }
+    .pill{
+      margin-left:auto; font-size:.75rem; padding:4px 8px; border-radius:999px; background:#ecfdf5; color:#065f46; border:1px solid #c7f6e8;
+    }
+    .service-description{ color:#6b7280; font-size:.85rem; line-height:1.4; }
+
+    /* Selected summary */
+    .selected{
+      background:#f7fdfc; border:1px dashed #cfeee7; border-radius:16px; padding:16px;
+    }
+    .selected-list{ list-style:none; margin-top:8px; }
+    .selected-item{
+      color:#114a43; font-size:.92rem; margin-bottom:6px; padding-left:22px; position:relative;
+    }
+    .selected-item::before{ content:'✓'; position:absolute; left:0; color:var(--accent); font-weight:800 }
+
+    /* Review snapshot */
+    .review-card{
+      border:1px solid var(--stroke); border-radius:16px; padding:16px; background:#fff;
+    }
+    .kv{ display:grid; grid-template-columns:140px 1fr; gap:6px 12px; font-size:.92rem }
+    .kv dt{ color:#6b7280 }
+    .kv dd{ color:#111827; margin:0 }
+
+    /* Top actions */
+    .bar{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;
+    }
+    .link-btn{
+      background:none; border:none; color:#0f766e; font-weight:700; cursor:pointer; padding:6px 8px; border-radius:10px;
+    }
+    .link-btn:hover{ text-decoration:underline; }
+
+    /* Nav buttons */
+    .navigation{
+      display:flex; justify-content:space-between; gap:12px;
+      margin-top:24px;
+    }
+    .nav-btn{
+      padding:12px 26px; border-radius:999px; border:2px solid var(--accent);
+      font-weight:700; cursor:pointer; transition:.15s transform,.15s background,.15s color,.15s border-color,.15s box-shadow;
+      background:#fff; color:var(--accent);
+    }
+    .nav-btn:hover{ transform:translateY(-1px); box-shadow:0 4px 12px rgba(90,207,188,.25) }
+    .btn-back{ background:#fff; }
+    .btn-submit{ background:var(--accent); color:#0f2d29 }
+    .btn-submit:hover{ background:var(--accent-strong); border-color:var(--accent-strong) }
+    .btn-submit:disabled{ opacity:.6; cursor:not-allowed; filter:grayscale(.2); box-shadow:none; transform:none }
+
+    /* Toast */
+    .toast{
+      position:fixed; inset:auto 20px 20px auto;
+      background:#052e2b; color:#ecfeff; padding:12px 16px; border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      opacity:0; pointer-events:none; transform:translateY(8px);
+      transition:opacity .2s ease, transform .2s ease;
+      z-index:50; font-size:.95rem;
+    }
+    .toast.show{ opacity:1; transform:translateY(0) }
+
+    @media (max-width:900px){
+      .title-wrap{ max-width: 88% }
+      .questionnaire-header .logo{ height:96px; left:20px; top:20px }
+    }
+    @media (max-width:768px){
+      .questionnaire-header{ min-height:200px }
+      .questionnaire-header .logo{ height:88px }
+      .questionnaire-container{ padding:30px 20px }
+    }
+  </style>
+</head>
+<body>
+  <div class="viewport">
+    <div class="q-stack" role="region" aria-label="Psychometric Questionnaire scroll area">
+      <!-- Sticky header -->
+      <header class="questionnaire-header" role="banner" aria-label="Psychometric Questionnaire header">
+        <img class="logo" src="logo.png" alt="Career Scopes logo" onerror="this.style.display='none'">
+        <div class="title-wrap">
+          <div class="header-title">Psychometric&nbsp;Questionnaire</div>
+          <div class="header-step">Step 3 of 3 • Services</div>
+          <div class="progress-rail" aria-hidden="true"><div class="progress-bar"></div></div>
+        </div>
+      </header>
+
+      <div class="questionnaire-container">
+        <form id="step3Form">
+          <div class="page-grid">
+            <!-- Left: Services -->
+            <section>
+              <div class="bar">
+                <div>
+                  <div class="section-title">Choose your services</div>
+                  <div class="muted" id="selectedCount">No services selected yet.</div>
+                </div>
+                <div>
+                  <button class="link-btn" type="button" id="selectAllBtn">Select all</button>
+                  <button class="link-btn" type="button" id="clearAllBtn">Clear</button>
+                </div>
+              </div>
+
+              <div class="services-grid" id="servicesGrid">
+                <!-- Cards -->
+                <label class="service-option">
+                  <input type="checkbox" name="services" value="career-coaching">
+                  <span class="service-card">
+                    <div class="service-head">
+                      <span class="service-icon">🎯</span>
+                      <span class="service-title">Career Coaching</span>
+                      <span class="pill">Popular</span>
+                    </div>
+                    <div class="service-description">One-on-one guidance to clarify direction, build an action plan, and stay accountable.</div>
+                  </span>
+                </label>
+
+                <label class="service-option">
+                  <input type="checkbox" name="services" value="interview-optimization">
+                  <span class="service-card">
+                    <div class="service-head">
+                      <span class="service-icon">💼</span>
+                      <span class="service-title">Interview Optimization</span>
+                    </div>
+                    <div class="service-description">Structured prep, mock interviews, and tailored feedback to improve performance.</div>
+                  </span>
+                </label>
+
+                <label class="service-option">
+                  <input type="checkbox" name="services" value="resume-cover-letter">
+                  <span class="service-card">
+                    <div class="service-head">
+                      <span class="service-icon">📝</span>
+                      <span class="service-title">Resume & Cover Letter</span>
+                      <span class="pill">Recommended</span>
+                    </div>
+                    <div class="service-description">ATS-friendly documents that highlight impact, achievements, and keywords.</div>
+                  </span>
+                </label>
+
+                <label class="service-option">
+                  <input type="checkbox" name="services" value="networking-guidance">
+                  <span class="service-card">
+                    <div class="service-head">
+                      <span class="service-icon">🤝</span>
+                      <span class="service-title">Networking Guidance</span>
+                    </div>
+                    <div class="service-description">Practical tactics and scripts to reach out, follow up, and grow relationships.</div>
+                  </span>
+                </label>
+
+                <label class="service-option">
+                  <input type="checkbox" name="services" value="interview-coaching">
+                  <span class="service-card">
+                    <div class="service-head">
+                      <span class="service-icon">🗣️</span>
+                      <span class="service-title">Interview Coaching</span>
+                    </div>
+                    <div class="service-description">Personalized sessions to sharpen storytelling, structure, and delivery.</div>
+                  </span>
+                </label>
+
+                <label class="service-option">
+                  <input type="checkbox" name="services" value="psychometric-feedback">
+                  <span class="service-card">
+                    <div class="service-head">
+                      <span class="service-icon">📊</span>
+                      <span class="service-title">Psychometric Analysis Feedback</span>
+                    </div>
+                    <div class="service-description">A walkthrough of your results with actionable insights and next-step guidance.</div>
+                  </span>
+                </label>
+              </div>
+
+              <!-- Selected summary (auto-show/hide) -->
+              <div class="selected" id="selectedBox" style="display:none;margin-top:14px;">
+                <div class="section-title" style="margin-bottom:6px;">Selected services</div>
+                <ul class="selected-list" id="selectedList"></ul>
+              </div>
+            </section>
+
+            <!-- Right: Review snapshot -->
+            <aside>
+              <div class="section-title">Quick review</div>
+              <div class="review-card" id="reviewCard">
+                <dl class="kv" id="reviewKV">
+                  <!-- Filled by JS -->
+                </dl>
+                <div class="muted" style="margin-top:10px;">
+                  You’ll be able to adjust services later from your dashboard.
+                </div>
+              </div>
+            </aside>
+          </div>
+
+          <!-- Nav -->
+          <div class="navigation">
+            <button type="button" class="nav-btn btn-back" id="backBtn">Back</button>
+            <button type="submit" class="nav-btn btn-submit" id="submitBtn" disabled>Submit</button>
+          </div>
+
+          <!-- ARIA live for selections -->
+          <div class="muted" aria-live="polite" id="liveRegion" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"> </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Assessment completed. Redirecting…</div>
+
+  <script>
+    const serviceNames = {
+      'career-coaching': 'Career Coaching',
+      'interview-optimization': 'Interview Optimization',
+      'resume-cover-letter': 'Resume & Cover Letter',
+      'networking-guidance': 'Networking Guidance',
+      'interview-coaching': 'Interview Coaching',
+      'psychometric-feedback': 'Psychometric Analysis Feedback'
+    };
+  
+    const submitBtn = document.getElementById('submitBtn');
+    const selectedBox = document.getElementById('selectedBox');
+    const selectedList = document.getElementById('selectedList');
+    const selectedCount = document.getElementById('selectedCount');
+    const liveRegion = document.getElementById('liveRegion');
+  
+    // Back (FIX: use the actual filename with space)
+    document.getElementById('backBtn').addEventListener('click', () => {
+      window.location.href = 'psychometric-step2.html';
+    });
+  
+    // Utilities
+    function getChecked() {
+      return Array.from(document.querySelectorAll('input[name="services"]:checked'));
+    }
+    function announce(msg){
+      liveRegion.textContent = ''; // reset for repeated messages
+      setTimeout(()=> liveRegion.textContent = msg, 10);
+    }
+  
+    // Update UI when services change
+    function updateSelectedServices() {
+      const checkboxes = getChecked();
+      const count = checkboxes.length;
+  
+      // Count label
+      selectedCount.textContent = count === 0
+        ? 'No services selected yet.'
+        : `${count} service${count>1?'s':''} selected`;
+  
+      // Enable/disable submit
+      submitBtn.disabled = (count === 0);
+  
+      // Summary list
+      if (count > 0) {
+        selectedBox.style.display = 'block';
+        selectedList.innerHTML = '';
+        checkboxes.forEach(cb => {
+          const li = document.createElement('li');
+          li.className = 'selected-item';
+          li.textContent = serviceNames[cb.value] || cb.value;
+          selectedList.appendChild(li);
+        });
+      } else {
+        selectedBox.style.display = 'none';
+        selectedList.innerHTML = '';
+      }
+    }
+  
+    // Bind change listeners
+    document.querySelectorAll('input[name="services"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        updateSelectedServices();
+        announce(`${serviceNames[cb.value]} ${cb.checked ? 'selected' : 'deselected'}.`);
+      });
+    });
+  
+    // NEW: Make the whole card reliably toggle even on nested clicks
+    document.getElementById('servicesGrid').addEventListener('click', (e) => {
+      const label = e.target.closest('label.service-option');
+      if (!label) return;
+      const cb = label.querySelector('input[type="checkbox"]');
+      if (cb && e.target !== cb) {
+        cb.checked = !cb.checked;
+        cb.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+  
+    // Select all / clear (safe if buttons are missing)
+    document.getElementById('selectAllBtn')?.addEventListener('click', () => {
+      document.querySelectorAll('input[name="services"]').forEach(cb => cb.checked = true);
+      updateSelectedServices();
+      announce('All services selected.');
+    });
+    document.getElementById('clearAllBtn')?.addEventListener('click', () => {
+      document.querySelectorAll('input[name="services"]').forEach(cb => cb.checked = false);
+      updateSelectedServices();
+      announce('All services cleared.');
+    });
+  
+    // Build quick review from previous steps
+    function buildReview() {
+      const step1 = JSON.parse(localStorage.getItem('psychometricStep1') || '{}');
+      const step2 = JSON.parse(localStorage.getItem('psychometricStep2') || '{}');
+  
+      const kv = document.getElementById('reviewKV');
+      kv.innerHTML = '';
+  
+      const rows = [
+        ['Interest', step1.careerInterest ? titleCase(step1.careerInterest) : '—'],
+        ['Experience', step1.experience ? step1.experience : '—'],
+        ['Roles', step1.desiredRoles && step1.desiredRoles.length ? step1.desiredRoles.map(titleCase).join(', ') : '—'],
+        ['Growth areas', step1.growthAreas && step1.growthAreas.length ? step1.growthAreas.map(titleCase).join(', ') : '—'],
+        ['Availability', step1.availability ? titleCase(step1.availability) : '—'],
+        ['LinkedIn', step2?.links?.linkedin || '—'],
+        ['GitHub', step2?.links?.github || '—'],
+        ['Portfolio', step2?.links?.portfolio || '—'],
+      ];
+  
+      rows.forEach(([k,v]) => {
+        const dt = document.createElement('dt'); dt.textContent = k;
+        const dd = document.createElement('dd'); dd.textContent = v;
+        kv.appendChild(dt); kv.appendChild(dd);
+      });
+    }
+  
+    function titleCase(s){
+      if(!s) return s;
+      return s.replace(/[-_]/g,' ').replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.slice(1));
+    }
+  
+    // Submit (kept as-is, just redirects to profile)
+    document.getElementById('step3Form').addEventListener('submit', function(e){
+      e.preventDefault();
+  
+      const selected = getChecked().map(cb => cb.value);
+      if (selected.length === 0) return; // safety
+  
+      // Save Step 3
+      localStorage.setItem('psychometricStep3', JSON.stringify({ services: selected }));
+  
+      // Combine all
+      const step1Data = JSON.parse(localStorage.getItem('psychometricStep1') || '{}');
+      const step2Data = JSON.parse(localStorage.getItem('psychometricStep2') || '{}');
+      const completeAssessment = {
+        ...step1Data,
+        ...step2Data,
+        services: selected,
+        completedAt: new Date().toISOString()
+      };
+      localStorage.setItem('psychometricAssessment', JSON.stringify(completeAssessment));
+  
+      // Toast + redirect
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(()=> {
+        window.location.href = 'profile.html';
+      }, 900);
+    });
+  
+    // Load saved selection if returning
+    window.addEventListener('load', () => {
+      const saved = JSON.parse(localStorage.getItem('psychometricStep3') || '{}');
+      if (saved.services && Array.isArray(saved.services)) {
+        saved.services.forEach(val => {
+          const cb = document.querySelector(`input[name="services"][value="${val}"]`);
+          if (cb) cb.checked = true;
+        });
+      }
+      updateSelectedServices();
+      buildReview();
+    });
+  </script>
+  <script src="main.js"></script>
+  
+</body>
+</html>
