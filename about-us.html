@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us</title>
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <style>
+      main container {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+      }
+
+      main container video {
+        position: absolute;
+        object-fit: cover;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      main container .caption {
+        z-index: 1;
+        position: absolute;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+      }
+
+      .about-wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        background: rgba(255, 255, 255, 0.6);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        max-width: 1000px;
+        margin: auto;
+        align-items: center;
+      }
+
+      .about-text {
+        flex: 2;
+        font-size: 1.2rem;
+        color: #034343;
+        line-height: 1.6;
+        text-align: left;
+      }
+
+      .about-text strong {
+        font-weight: 700;
+        color: #035d5d;
+      }
+
+      .about-image {
+        flex: 1;
+        max-width: 250px;
+      }
+
+      .about-image img {
+        width: 100%;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .header {
+        font-size: 3rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: bold;
+        color: #0b4b4b;
+      }
+
+      .footer {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-top: 2rem;
+        color: #333;
+      }
+
+      @media (max-width: 768px) {
+        .about-wrapper {
+          flex-direction: column;
+          padding: 1.5rem;
+        }
+
+        .header {
+          font-size: 2.5rem;
+        }
+
+        .about-text {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <container class="container">
+        <div class="logo">
+          <a href="./index.html">
+            <img src="./images/logo_white.png" alt="careerScops" />
+          </a>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./about-us.html" class="active">About us</a></li>
+            <li><a href="./testimonials.html">Testimonials</a></li>
+            <li><a href="./contact-us.html">Contact Us</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <a href="./login.html" class="login-btn">Login</a>
+          <a href="./register.html" class="register-btn">Register</a>
+        </div>
+      </container>
+    </header>
+    <main>
+      <container>
+        <video autoplay muted loop onloadstart="this.playbackRate = 0.25;">
+          <source src="./images/animated-background.mp4" type="video/mp4" />
+        </video>
+        <div class="caption">
+          <article>
+      
+            <div class="about-wrapper">
+              <div class="about-text">
+                Meet <strong>Lucy</strong>, your Career Development Practitioner who specialises in guiding her clients towards possibilities and opportunities through a unique holistic approach. Her friendly and supportive demeanour along with her knowledgeable expertise will unlock your true potential. Lucy’s commitment is about empowering and nurturing individual strengths to plan effective and strategic pathways towards your career success.
+              </div>
+              <div class="about-image">
+                <img src="./images/image.png" alt="Lucy profile image" />
+              </div>
+            </div>
+            <div class="footer">“Be great, because you love what you do”</div>
+          </article>
+        </div>
+      </container>
+    </main>
+  </body>
+</html>

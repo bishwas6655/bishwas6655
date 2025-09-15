@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — CareerScopes</title>
+
+  <!-- Reuse site styles -->
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* --- Admin-only layout enhancements (kept minimal) --- */
+    .admin-header { background:#fff; border-bottom:1px solid #e5e7eb; }
+    .admin-header .container { display:flex; align-items:center; justify-content:space-between; padding:16px 0; }
+    .admin-title { font-weight:700; font-size:22px; }
+
+    .admin-tabs { display:flex; gap:8px; flex-wrap:wrap; margin: 20px 0; }
+    .admin-tab { padding:10px 14px; border:1px solid #e5e7eb; border-radius:10px; background:#f8fafc; cursor:pointer; font-weight:600; }
+    .admin-tab.active { background:#b8e0d2; border-color:#b8e0d2; }
+
+    .admin-panel { display:none; }
+    .admin-panel.active { display:block; }
+
+    /* Edit Pages layout */
+    .edit-grid { display:grid; grid-template-columns: 1.1fr 1.2fr; gap:24px; align-items:start; }
+    @media (max-width: 980px) { .edit-grid { grid-template-columns: 1fr; } }
+
+    .card { background:#ffffff; border:1px solid #e5e7eb; border-radius:14px; padding:16px; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+    .card h3 { margin-top:0; }
+
+    .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .row > * { flex: 0 0 auto; }
+    .row .grow { flex:1 1 auto; }
+
+    select, input[type="text"], textarea { width:100%; font-family:inherit; border:1px solid #d1d5db; border-radius:10px; padding:10px 12px; }
+    textarea { min-height:88px; resize:vertical; }
+
+    .kv { border:1px solid #eef2f7; border-radius:10px; padding:12px; margin-bottom:10px; background:#f9fafb; }
+    .kv.active { outline: 2px solid #00b894; background:#f4fffb; }
+    .kv label { font-size:12px; color:#374151; font-weight:700; text-transform:uppercase; letter-spacing:.02em; }
+
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; border-radius:10px; border:1px solid #d1d5db; background:#fff; cursor:pointer; }
+    .btn.primary { background:#00d4aa; color:#fff; border-color:#00d4aa; font-weight:700; }
+    .btn.warn { background:#fff8f0; color:#b45309; border-color:#f59e0b; }
+    .btn:disabled { opacity:.5; cursor:not-allowed; }
+    .hint { color:#6b7280; font-size:12px; }
+
+    .iframe-wrap { position:relative; border-radius:14px; overflow:hidden; border:1px solid #e5e7eb; }
+    .iframe-wrap iframe { width:100%; height:70vh; border:0; background:#fff; }
+
+    .stack { display:flex; flex-direction:column; gap:12px; }
+    .stack-lg { gap:16px; }
+
+    .toast {
+      position: fixed; right:16px; bottom:16px; background:#111827; color:#fff;
+      padding:10px 14px; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.24);
+      opacity:0; transform: translateY(8px); transition: all .2s ease;
+    }
+    .toast.show { opacity:1; transform: translateY(0); }
+
+    .pill { padding:6px 10px; border-radius:999px; background:#eef2ff; color:#3730a3; font-size:12px; font-weight:700; }
+    .table { width:100%; border-collapse: collapse; }
+    .table th, .table td { border-bottom:1px solid #e5e7eb; padding:10px; text-align:left; }
+    .muted { color:#6b7280; }
+  </style>
+</head>
+<body>
+
+  <!-- Header (site style) -->
+  <header class="admin-header">
+    <div class="container">
+      <a class="logo" href="/index.html">
+        <img src="./images/logo.jpg" alt="CareerScopes" style="height:38px"/>
+      </a>
+      <div class="admin-title">Admin Dashboard</div>
+      <nav>
+        <ul>
+          <li><a href="/index.html">View site</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 20px 0 60px;">
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-panel="messages">View Messages</button>
+      <button class="admin-tab" data-panel="users">View Users</button>
+      <button class="admin-tab" data-panel="psych">Psychometric</button>
+      <button class="admin-tab" data-panel="pages">Edit Pages</button>
+    </div>
+  
+    <!-- Panel: Messages -->
+    <section class="admin-panel active" id="panel-messages">
+      <div class="card stack-lg">
+        <div class="row">
+          <h3 class="grow">Messages</h3>
+          <span class="pill" id="msg-count">0</span>
+        </div>
+        <div id="messages-table-wrap" class="stack"></div>
+      </div>
+    </section>
+  
+    <!-- Panel: Users -->
+    <section class="admin-panel" id="panel-users">
+      <div class="card stack-lg">
+        <div class="row">
+          <h3 class="grow">Users</h3>
+          <span class="pill" id="user-count">0</span>
+        </div>
+        <div id="users-table-wrap" class="stack"></div>
+      </div>
+    </section>
+  
+    <!-- Panel: Psychometric -->
+    <section class="admin-panel" id="panel-psych">
+      <div class="card stack-lg">
+        <div class="row">
+          <h3 class="grow">Psychometric</h3>
+          <div class="row">
+            <input type="email" id="psychEmail" placeholder="Enter user email" class="grow"/>
+            <button class="btn" id="psychLoadBtn">Load</button>
+          </div>
+        </div>
+        <div id="psychWrap" class="stack"></div>
+      </div>
+    </section>
+  
+    <!-- Panel: Pages -->
+    <section class="admin-panel" id="panel-pages">
+      <div class="edit-grid">
+        <!-- Left: Keys + Editor -->
+        <div class="card stack-lg">
+          <div class="row">
+            <h3 class="grow">Edit Pages</h3>
+            <input type="text" id="adminToken" placeholder="Admin token (optional)" class="grow"/>
+            <button class="btn" id="saveTokenBtn">Save</button>
+          </div>
+  
+          <div class="row">
+            <div class="grow">
+              <select id="pageSelect" aria-label="Select page"></select>
+            </div>
+            <div class="row">
+              <button class="btn" id="reloadPageBtn">Reload</button>
+              <button class="btn" id="pickBtn" title="Click an element in the preview to select its key">Pick from preview</button>
+              <a class="btn" id="openPageBtn" href="#" target="_blank" rel="noopener">Open ↗</a>
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Keys list -->
+            <div class="card" style="flex:0 0 280px; max-height:60vh; overflow:auto;">
+              <h4 style="margin:0 0 8px 0;">Keys</h4>
+              <div id="keysList" class="stack"></div>
+            </div>
+  
+            <!-- Selected key editor -->
+            <div class="card grow">
+              <div class="stack">
+                <div class="row">
+                  <div class="grow">
+                    <div id="selectedLabel" style="font-weight:700;"></div>
+                    <div id="selectedKey" class="muted" style="font-size:12px;"></div>
+                  </div>
+                  <span class="pill" id="matchCount">0 matches</span>
+                </div>
+                <textarea id="selectedValue" placeholder="HTML allowed"></textarea>
+                <div class="row">
+                  <button class="btn primary" id="saveKeyBtn">Save key</button>
+                  <button class="btn" id="saveAllBtn">Save all</button>
+                  <input class="grow" id="newKey" type="text" placeholder="Add new key (e.g. new_section_html)"/>
+                  <button class="btn" id="addKeyBtn">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Right: Live Preview -->
+        <div class="card">
+          <div class="row">
+            <h3 class="grow">Preview</h3>
+            <span id="pickModeBadge" class="pill" style="display:none;">Pick mode</span>
+          </div>
+          <div class="iframe-wrap">
+            <iframe id="previewFrame" title="Page preview"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <div class="toast" id="toast"></div>
+  
+  <script>
+    // -------- Minimal helpers --------
+    const DEFAULT_PAGES = [
+      { slug: 'career_coaching',        path: '/career_coaching.html',        label: 'Career Coaching' },
+      { slug: 'interview_coaching',     path: '/interview_coaching.html',     label: 'Interview Coaching' },
+      { slug: 'linkedin_optimization',  path: '/linkedin_optimization.html',  label: 'LinkedIn Optimization' },
+      { slug: 'resume_writing',         path: '/resume_writing.html',         label: 'Resume Writing' }
+    ];
+    const EL = (s) => document.querySelector(s);
+    const ELS = (s) => Array.from(document.querySelectorAll(s));
+    const toast = (m)=>{const t=EL('#toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200);};
+    const escapeHtml = (s)=> (s||'').toString().replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  
+    // token (for CMS admin API if enabled)
+    const TOKEN_KEY='cs_admin_token';
+    const getToken=()=>localStorage.getItem(TOKEN_KEY)||'';
+    const setToken=v=>localStorage.setItem(TOKEN_KEY,v||'');
+  
+    // fetch wrapper
+    async function jfetch(url,opts={}){
+      const headers=Object.assign({'Content-Type':'application/json'},opts.headers||{});
+      const token=getToken(); if(token) headers.Authorization='Bearer '+token;
+      const res=await fetch(url,Object.assign({},opts,{headers}));
+      if(!res.ok) throw {status:res.status,message:await res.text()};
+      return res.headers.get('content-type')?.includes('application/json')?res.json():res.text();
+    }
+  
+    // -------- Tabs --------
+    ELS('.admin-tab').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        ELS('.admin-tab').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const id='panel-'+btn.dataset.panel;
+        ELS('.admin-panel').forEach(p=>p.classList.remove('active'));
+        EL('#'+id).classList.add('active');
+        if(id==='panel-messages') loadMessages();
+        if(id==='panel-users') loadUsers();
+        if(id==='panel-psych')  initPsych();
+        if(id==='panel-pages')  initPages();
+      });
+    });
+  
+    // -------- Messages --------
+    async function loadMessages(){
+      const wrap=EL('#messages-table-wrap'); wrap.innerHTML='';
+      try{
+        const data=await jfetch('/api/contacts');
+        const arr=Array.isArray(data)?data:(data.contacts||[]);
+        const rows=arr.map(c=>`
+          <tr>
+            <td>${escapeHtml(c.firstName||'')} ${escapeHtml(c.lastName||'')}</td>
+            <td>${escapeHtml(c.email||'')}</td>
+            <td>${escapeHtml(c.state||'')}</td>
+            <td class="muted">${escapeHtml((c.message||'').slice(0,120))}${(c.message||'').length>120?'…':''}</td>
+          </tr>`).join('');
+        wrap.innerHTML=`
+          <div class="card">
+            <table class="table">
+              <thead><tr><th>Name</th><th>Email</th><th>State</th><th>Message</th></tr></thead>
+              <tbody>${rows || '<tr><td colspan="4" class="muted">No messages.</td></tr>'}</tbody>
+            </table>
+          </div>`;
+        EL('#msg-count').textContent = arr.length;
+      }catch{
+        wrap.innerHTML='<div class="card"><div class="muted">No messages.</div></div>';
+        EL('#msg-count').textContent='0';
+      }
+    }
+  
+    // -------- Users (with details + documents) --------
+    async function loadUsers(){
+      const wrap=EL('#users-table-wrap'); wrap.innerHTML='';
+      try{
+        const data=await jfetch('/api/users');
+        const arr=Array.isArray(data)?data:(data.users||[]);
+  
+        const rows=arr.map(u=>`
+          <tr>
+            <td>${escapeHtml(u.fullName||u.name||'')}</td>
+            <td>${escapeHtml(u.email||'')}</td>
+            <td class="muted">${escapeHtml((u.services||[]).join(', '))}</td>
+            <td style="text-align:right">
+              <button class="btn" data-view="${escapeHtml(u.email||'')}">View</button>
+            </td>
+          </tr>`).join('');
+  
+        wrap.innerHTML=`
+          <div class="card">
+            <table class="table">
+              <thead>
+                <tr><th>Name</th><th>Email</th><th>Services</th><th style="width:1%"></th></tr>
+              </thead>
+              <tbody>${rows || '<tr><td colspan="4" class="muted">No users.</td></tr>'}</tbody>
+            </table>
+          </div>
+          <div id="user-details"></div>
+        `;
+  
+        wrap.querySelectorAll('[data-view]').forEach(btn=>{
+          btn.addEventListener('click', ()=> viewUser(btn.getAttribute('data-view')));
+        });
+  
+        EL('#user-count').textContent = arr.length;
+      }catch(e){
+        console.error(e);
+        wrap.innerHTML='<div class="card"><div class="muted">No users.</div></div>';
+        EL('#user-count').textContent='0';
+      }
+    }
+  
+    async function viewUser(email){
+      const box = EL('#user-details');
+      box.innerHTML = '<div class="card"><div class="muted">Loading…</div></div>';
+      try{
+        const res = await jfetch('/api/profile?email='+encodeURIComponent(email));
+        if(!res?.success){ box.innerHTML = '<div class="card"><div class="muted">Not found.</div></div>'; return; }
+        const u = res.user || {};
+        const q = u.questionnaire || {};
+        const docs = Array.isArray(u.documents) ? u.documents : [];
+  
+        const pillList = (arr)=> (arr&&arr.length) ? arr.map(x=>`<span class="pill" style="margin:2px">${escapeHtml(x)}</span>`).join(' ') : '<span class="muted">—</span>';
+        const kv = (k,v)=> `<dt>${k}</dt><dd>${v||'<span class="muted">—</span>'}</dd>`;
+  
+        const docsHtml = docs.length
+          ? `<ul class="doc-list" style="padding-left:18px;margin:8px 0 0;">
+              ${docs.map(d=>`
+                <li class="doc-item" style="margin:6px 0;">
+                  <a href="${escapeHtml(d.url||'#')}" target="_blank" rel="noopener">${escapeHtml(d.originalname||d.filename||'file')}</a>
+                  <span class="muted" style="margin-left:6px;">(${Math.max(1,Math.round((d.size||0)/1024))} KB)</span>
+                </li>`).join('')}
+            </ul>`
+          : '<div class="muted">No documents uploaded.</div>';
+  
+        box.innerHTML = `
+          <div class="card stack" style="gap:16px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+              <h3 style="margin:0">${escapeHtml(u.fullName||'User')}</h3>
+              <button class="btn" id="closeUser">Close</button>
+            </div>
+  
+            <!-- Contact + Documents -->
+            <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <section class="card stack">
+                <h4 style="margin:0">Contact</h4>
+                <dl class="kv" style="display:grid;grid-template-columns:max-content 1fr;gap:6px 12px;">
+                  ${kv('Email', u.email ? `<a href="mailto:${escapeHtml(u.email)}">${escapeHtml(u.email)}</a>` : '')}
+                  ${kv('Phone', escapeHtml(u.phone))}
+                  ${kv('State', escapeHtml(u.state))}
+                  ${kv('Services', pillList(u.services||[]))}
+                </dl>
+              </section>
+              <section class="card stack">
+                <h4 style="margin:0">Documents</h4>
+                ${docsHtml}
+              </section>
+            </div>
+  
+            <!-- Step 1 -->
+            <section class="card stack">
+              <h4 style="margin:0">Psychometric — Step 1</h4>
+              <dl class="kv" style="display:grid;grid-template-columns:max-content 1fr;gap:6px 12px;">
+                ${kv('Career Interest', escapeHtml(q.careerInterest))}
+                ${kv('Skills Confidence', escapeHtml(q.skillsConfidence))}
+                ${kv('Work Environment', escapeHtml(q.workEnvironment))}
+                ${kv('Desired Roles', pillList(q.desiredRoles||[]))}
+                ${kv('Growth Areas', pillList(q.growthAreas||[]))}
+                ${kv('Salary Range', escapeHtml(q.salaryRange))}
+                ${kv('Availability', escapeHtml(q.availability))}
+                ${kv('Additional Info', escapeHtml(q.additionalInfo))}
+              </dl>
+            </section>
+  
+            <!-- Step 2 -->
+            <section class="card stack">
+              <h4 style="margin:0">Psychometric — Step 2</h4>
+              <dl class="kv" style="display:grid;grid-template-columns:max-content 1fr;gap:6px 12px;">
+                ${kv('LinkedIn', q.links?.linkedin ? `<a href="${escapeHtml(q.links.linkedin)}" target="_blank" rel="noopener">${escapeHtml(q.links.linkedin)}</a>` : '')}
+                ${kv('GitHub', q.links?.github ? `<a href="${escapeHtml(q.links.github)}" target="_blank" rel="noopener">${escapeHtml(q.links.github)}</a>` : '')}
+                ${kv('Portfolio', q.links?.portfolio ? `<a href="${escapeHtml(q.links.portfolio)}" target="_blank" rel="noopener">${escapeHtml(q.links.portfolio)}</a>` : '')}
+                ${kv('Upload Notes', escapeHtml(q.uploadNotes))}
+              </dl>
+              <div>${docsHtml}</div>
+            </section>
+  
+            <!-- Step 3 -->
+            <section class="card stack">
+              <h4 style="margin:0">Psychometric — Step 3</h4>
+              ${pillList(u.services||[])}
+            </section>
+          </div>
+        `;
+        EL('#closeUser').addEventListener('click', ()=> box.innerHTML='');
+      }catch(e){
+        console.error(e);
+        box.innerHTML = '<div class="card"><div class="muted">Failed to load user.</div></div>';
+      }
+    }
+  
+    // -------- Psychometric (tab view for any email) --------
+    function initPsych(){
+      EL('#psychWrap').innerHTML='';
+    }
+    EL('#psychLoadBtn')?.addEventListener('click', async ()=>{
+      const email=(EL('#psychEmail').value||'').trim();
+      if(!email) return toast('Enter an email');
+      const wrap=EL('#psychWrap'); wrap.innerHTML='<div class="card"><div class="muted">Loading…</div></div>';
+      try{
+        const res=await jfetch('/api/profile?email='+encodeURIComponent(email));
+        if(!res?.success){ wrap.innerHTML='<div class="card"><div class="muted">Not found.</div></div>'; return; }
+        const u = res.user || {};
+        const q = u.questionnaire || {};
+        const docs = Array.isArray(u.documents) ? u.documents : [];
+  
+        const pillList = (arr)=> (arr&&arr.length) ? arr.map(x=>`<span class="pill" style="margin:2px">${escapeHtml(x)}</span>`).join(' ') : '<span class="muted">—</span>';
+        const kv = (k,v)=> `<dt>${k}</dt><dd>${v||'<span class="muted">—</span>'}</dd>`;
+        const docsHtml = docs.length
+          ? `<ul class="doc-list" style="padding-left:18px;margin:8px 0 0;">
+              ${docs.map(d=>`
+                <li class="doc-item" style="margin:6px 0;">
+                  <a href="${escapeHtml(d.url||'#')}" target="_blank" rel="noopener">${escapeHtml(d.originalname||d.filename||'file')}</a>
+                  <span class="muted" style="margin-left:6px;">(${Math.max(1,Math.round((d.size||0)/1024))} KB)</span>
+                </li>`).join('')}
+            </ul>`
+          : '<div class="muted">No documents uploaded.</div>';
+  
+        wrap.innerHTML = `
+          <div class="stack" style="gap:16px">
+            <div class="card stack">
+              <h4 style="margin:0">User</h4>
+              <div class="muted">${escapeHtml(u.fullName||'')} &nbsp;•&nbsp; ${escapeHtml(u.email||'')}</div>
+            </div>
+  
+            <section class="card stack">
+              <h4 style="margin:0">Step 1</h4>
+              <dl class="kv" style="display:grid;grid-template-columns:max-content 1fr;gap:6px 12px;">
+                ${kv('Career Interest', escapeHtml(q.careerInterest))}
+                ${kv('Skills Confidence', escapeHtml(q.skillsConfidence))}
+                ${kv('Work Environment', escapeHtml(q.workEnvironment))}
+                ${kv('Desired Roles', pillList(q.desiredRoles||[]))}
+                ${kv('Growth Areas', pillList(q.growthAreas||[]))}
+                ${kv('Salary Range', escapeHtml(q.salaryRange))}
+                ${kv('Availability', escapeHtml(q.availability))}
+                ${kv('Additional Info', escapeHtml(q.additionalInfo))}
+              </dl>
+            </section>
+  
+            <section class="card stack">
+              <h4 style="margin:0">Step 2</h4>
+              <dl class="kv" style="display:grid;grid-template-columns:max-content 1fr;gap:6px 12px;">
+                ${kv('LinkedIn', q.links?.linkedin ? `<a href="${escapeHtml(q.links.linkedin)}" target="_blank" rel="noopener">${escapeHtml(q.links.linkedin)}</a>` : '')}
+                ${kv('GitHub', q.links?.github ? `<a href="${escapeHtml(q.links.github)}" target="_blank" rel="noopener">${escapeHtml(q.links.github)}</a>` : '')}
+                ${kv('Portfolio', q.links?.portfolio ? `<a href="${escapeHtml(q.links.portfolio)}" target="_blank" rel="noopener">${escapeHtml(q.links.portfolio)}</a>` : '')}
+                ${kv('Upload Notes', escapeHtml(q.uploadNotes))}
+              </dl>
+              <div>${docsHtml}</div>
+            </section>
+  
+            <section class="card stack">
+              <h4 style="margin:0">Step 3</h4>
+              ${pillList(u.services||[])}
+            </section>
+          </div>
+        `;
+      }catch{
+        wrap.innerHTML='<div class="card"><div class="muted">Error loading profile.</div></div>';
+      }
+    });
+  
+    // -------- Pages (CMS) — UNCHANGED BEHAVIOUR --------
+    let pages=[...DEFAULT_PAGES];
+    let currentSlug=pages[0].slug;
+    let sectionsDB={};         // from GET /api/pages/:slug
+    let keysFromDom=[];        // from scanning the iframe
+    let selectedKey=null;      // currently edited key
+    let pickMode=false;
+  
+    const friendlyLabelMap={
+      // LinkedIn Optimization
+      hero_title:'Hero Title',
+      headline_html:'Headline',
+      optimize_cta_text:'Primary CTA',
+      what_we_do_title:'Section Title: What We Do',
+      service1_title_html:'Card 1 Title',
+      service1_cta_text:'Card 1 CTA',
+      service2_title:'Card 2 Title',
+      service2_cta_text:'Card 2 CTA',
+      // Resume Writing
+      intro_html:'Intro',
+      cta_text:'Primary CTA',
+      main_title:'Main Title',
+      what_we_do_html:'What We Do (HTML)',
+      enquire_cta_text:'Enquire CTA'
+    };
+  
+    function friendlyLabel(key){
+      if(friendlyLabelMap[key]) return friendlyLabelMap[key];
+      return key.replace(/[_-]+/g,' ').replace(/\b\w/g,m=>m.toUpperCase());
+    }
+    function mapSlugToPath(slug) {
+      const d = DEFAULT_PAGES.find(p => p.slug === slug);
+      return d ? d.path : `/${slug}.html`;
+    }
+  
+    async function loadPagesList() {
+      const defaultsMap = new Map(DEFAULT_PAGES.map(p => [p.slug, p]));
+      let apiSlugs = [];
+      try {
+        const list = await jfetch('/api/admin/pages'); // [{slug, updatedAt}, ...]
+        if (Array.isArray(list)) apiSlugs = list.map(x => x.slug).filter(Boolean);
+      } catch {}
+      const unionSlugs = Array.from(new Set([...defaultsMap.keys(), ...apiSlugs]));
+      pages = unionSlugs
+        .map(slug => {
+          const d = defaultsMap.get(slug);
+          return {
+            slug,
+            path: d?.path || `/${slug}.html`,
+            label: d?.label || slug.replace(/[_-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+          };
+        })
+        .sort((a, b) => a.label.localeCompare(b.label));
+      if (pages.length < 2) {
+        pages = DEFAULT_PAGES.slice().sort((a,b)=>a.label.localeCompare(b.label));
+      }
+      const sel = EL('#pageSelect');
+      const prev = sel.value || currentSlug || '';
+      sel.innerHTML = pages.map(p => `<option value="${p.slug}">${p.label}</option>`).join('');
+      if (prev && pages.some(p => p.slug === prev)) sel.value = prev;
+    }
+  
+    function setPickMode(on){
+      pickMode=on;
+      EL('#pickModeBadge').style.display= on ? '' : 'none';
+      EL('#pickBtn').classList.toggle('primary', on);
+      const ifr=EL('#previewFrame'); const doc=ifr.contentDocument||ifr.contentWindow?.document;
+      if(!doc) return;
+      doc.body.style.cursor = on ? 'crosshair' : '';
+    }
+  
+    async function initPages(){
+      EL('#adminToken').value=getToken();
+      await loadPagesList();
+      const sel=EL('#pageSelect');
+      const chosen = sel.value || (pages[0] && pages[0].slug) || 'resume_writing';
+      sel.value = chosen;
+      await loadPage(chosen);
+    }
+  
+    async function loadPage(slug){
+      currentSlug=slug;
+      selectedKey=null;
+      EL('#openPageBtn').href=mapSlugToPath(slug);
+      EL('#previewFrame').src=mapSlugToPath(slug);
+      try{
+        const {sections}=await jfetch('/api/pages/'+encodeURIComponent(slug));
+        sectionsDB=sections||{};
+      }catch{ sectionsDB={}; }
+      EL('#previewFrame').addEventListener('load', onPreviewLoaded, { once:true });
+    }
+  
+    function onPreviewLoaded(){
+      keysFromDom = scanDomKeys();
+      renderKeysList();
+      const firstKey = (keysFromDom[0]) || Object.keys(sectionsDB)[0] || null;
+      if(firstKey) selectKey(firstKey);
+      injectPreviewHelpers();
+    }
+  
+    function scanDomKeys(){
+      const ifr=EL('#previewFrame'); const doc=ifr.contentDocument||ifr.contentWindow?.document;
+      if(!doc) return [];
+      const set = new Set();
+      doc.querySelectorAll('[data-cms]').forEach(el => set.add(el.getAttribute('data-cms')));
+      Object.keys(sectionsDB).forEach(k=>set.add(k));
+      return Array.from(set).filter(Boolean).sort();
+    }
+  
+    function renderKeysList(){
+      const list=EL('#keysList'); list.innerHTML='';
+      keysFromDom.forEach(k=>{
+        const btn=document.createElement('button');
+        btn.className='btn';
+        btn.style.justifyContent='space-between';
+        btn.style.width='100%';
+        btn.dataset.key=k;
+        btn.innerHTML=`<span>${friendlyLabel(k)}</span><span class="muted" style="font-size:11px;margin-left:8px;">${k}</span>`;
+        btn.addEventListener('click',()=>selectKey(k));
+        list.appendChild(btn);
+      });
+      markActiveKeyButton();
+    }
+  
+    function markActiveKeyButton(){
+      ELS('#keysList .btn').forEach(b=>b.classList.remove('primary'));
+      if(!selectedKey) return;
+      const active=ELS('#keysList .btn').find(b=>b.dataset.key===selectedKey);
+      if(active) active.classList.add('primary');
+    }
+  
+    function selectKey(key){
+      selectedKey=key;
+      markActiveKeyButton();
+      EL('#selectedLabel').textContent=friendlyLabel(key);
+      EL('#selectedKey').textContent=key;
+      EL('#selectedValue').value = sectionsDB[key] ?? '';
+      const matches = highlightInPreview(key);
+      EL('#matchCount').textContent = `${matches} match${matches===1?'':'es'}`;
+    }
+  
+    function injectPreviewHelpers(){
+      const ifr=EL('#previewFrame'); const doc=ifr.contentDocument||ifr.contentWindow?.document;
+      if(!doc) return;
+      doc.querySelectorAll('.__cms_style').forEach(n=>n.remove());
+      const style=doc.createElement('style');
+      style.className='__cms_style';
+      style.textContent=`
+        [data-cms].__cms_hi{ outline:3px solid #00d4aa; outline-offset:2px; transition: outline-color .15s;}
+        [data-cms].__cms_pick:hover{ outline:3px dashed #00d4aa; cursor:crosshair; }
+      `;
+      doc.head.appendChild(style);
+      doc.addEventListener('click', previewClickHandler, true);
+      doc.addEventListener('mousemove', previewHoverHandler, true);
+    }
+  
+    function previewClickHandler(e){
+      if(!pickMode) return;
+      const target=e.target.closest('[data-cms]'); if(!target) return;
+      e.preventDefault(); e.stopPropagation();
+      const key=target.getAttribute('data-cms');
+      setPickMode(false);
+      selectKey(key);
+    }
+  
+    function previewHoverHandler(e){
+      const ifr=EL('#previewFrame'); const doc=ifr.contentDocument||ifr.contentWindow?.document;
+      if(!doc) return;
+      doc.querySelectorAll('[data-cms]').forEach(n=>n.classList.remove('__cms_pick'));
+      if(pickMode){
+        const t=e.target.closest('[data-cms]');
+        if(t) t.classList.add('__cms_pick');
+      }
+    }
+  
+    function highlightInPreview(key){
+      const ifr=EL('#previewFrame'); const doc=ifr.contentDocument||ifr.contentWindow?.document;
+      if(!doc) return 0;
+      doc.querySelectorAll('[data-cms]').forEach(el=>el.classList.remove('__cms_hi'));
+      const nodes=doc.querySelectorAll(`[data-cms="${CSS.escape(key)}"]`);
+      nodes.forEach(el=>{
+        el.classList.add('__cms_hi');
+        el.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+      return nodes.length;
+    }
+  
+    async function saveKey(){
+      if(!selectedKey) return toast('Select a key');
+      sectionsDB[selectedKey]=EL('#selectedValue').value;
+      try{
+        await jfetch('/api/pages/'+encodeURIComponent(currentSlug), {
+          method:'PUT',
+          body: JSON.stringify({ sections: sectionsDB })
+        });
+        toast('Saved');
+        const ifr=EL('#previewFrame'); ifr.src=ifr.src;
+      }catch(e){ toast('Save failed'); }
+    }
+  
+    async function saveAll(){
+      try{
+        await jfetch('/api/pages/'+encodeURIComponent(currentSlug), {
+          method:'PUT',
+          body: JSON.stringify({ sections: sectionsDB })
+        });
+        toast('Saved all');
+        const ifr=EL('#previewFrame'); ifr.src=ifr.src;
+      }catch(e){ toast('Save failed'); }
+    }
+  
+    function addKey(){
+      const key=(EL('#newKey').value||'').trim(); if(!key) return;
+      if(!sectionsDB[key]) sectionsDB[key]='';
+      EL('#newKey').value='';
+      if(!keysFromDom.includes(key)){ keysFromDom.push(key); keysFromDom.sort(); renderKeysList(); }
+      selectKey(key);
+    }
+  
+    // -------- Events --------
+    EL('#saveTokenBtn')?.addEventListener('click', ()=>{ setToken(EL('#adminToken').value.trim()); toast('Token saved'); });
+    EL('#pageSelect')?.addEventListener('change', e=>loadPage(e.target.value));
+    EL('#reloadPageBtn')?.addEventListener('click', ()=> loadPage(EL('#pageSelect').value));
+    EL('#pickBtn')?.addEventListener('click', ()=> setPickMode(!pickMode));
+    EL('#saveKeyBtn')?.addEventListener('click', saveKey);
+    EL('#saveAllBtn')?.addEventListener('click', saveAll);
+    EL('#addKeyBtn')?.addEventListener('click', addKey);
+  
+    // default load
+    loadMessages();
+  </script>
+  
+  
+</body>
+</html>

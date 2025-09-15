@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LinkedIn Optimisation - CareerScopes</title>
+
+  <!-- Site CSS (root-absolute so it works anywhere) -->
+  
+  <link rel="stylesheet" href="./css/styles.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    .header {
+      padding: 20px 0;
+      background-color: #fff;
+    }
+  
+    .header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    /* LinkedIn Optimization Specific Styles */
+    .linkedin-hero {
+      background: linear-gradient(135deg, #7fb9b1 0%, #a8d5d1 100%);
+      padding: 80px 0;
+      border-radius: 20px;
+      margin: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+  
+    .linkedin-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('./images/Foreground.jpeg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.3;
+      z-index: 1;
+    }
+  
+    .linkedin-hero .container {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+  
+    .linkedin-hero h1 {
+      color: white;
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      font-style: italic;
+    }
+  
+    .main-content {
+      padding: 60px 0;
+      text-align: center;
+    }
+  
+    .linkedin-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+    }
+  
+    .linkedin-logo {
+      width: 120px;
+      height: 120px;
+      background-color: #0077b5;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 60px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  
+    .linkedin-text {
+      text-align: left;
+    }
+  
+    .linkedin-text h2 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+  
+    .optimize-btn {
+      background-color: #00d4aa;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      box-shadow: 0 2px 8px rgba(0, 212, 170, 0.3);
+    }
+  
+    .optimize-btn:hover {
+      background-color: #00b894;
+      box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
+      transform: translateY(-1px);
+    }
+  
+    .what-we-do {
+      margin: 80px 0;
+    }
+  
+    .what-we-do h3 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 50px;
+    }
+  
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  
+    .service-card {
+      background-color: #c8e6e1;
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+  
+    .service-card:hover {
+      transform: translateY(-5px);
+    }
+  
+    .service-card h4 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 30px;
+    }
+  
+    .service-card .book-btn {
+      background-color: #00d4aa;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      box-shadow: 0 2px 8px rgba(0, 212, 170, 0.3);
+    }
+  
+    .service-card .book-btn:hover {
+      background-color: #00b894;
+      box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
+      transform: translateY(-1px);
+    }
+  
+    .contact-form {
+      background-color: #f5f5f5;
+      border: 2px solid #ddd;
+      border-radius: 15px;
+      padding: 40px;
+      margin: 60px auto;
+      max-width: 600px;
+    }
+  
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+  
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .form-group label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+  
+    .form-group input,
+    .form-group textarea {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'Inter', sans-serif;
+    }
+  
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+  
+    .send-btn {
+      background-color: #00d4aa;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      box-shadow: 0 2px 8px rgba(0, 212, 170, 0.3);
+      display: block;
+      margin: 30px auto 0;
+    }
+  
+    .send-btn:hover {
+      background-color: #00b894;
+      box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
+      transform: translateY(-1px);
+    }
+  
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header .container {
+        flex-direction: column;
+        gap: 20px;
+      }
+  
+      .linkedin-hero h1 {
+        font-size: 36px;
+      }
+  
+      .linkedin-hero {
+        margin: 10px;
+        padding: 60px 0;
+      }
+  
+      .linkedin-section {
+        flex-direction: column;
+        gap: 20px;
+      }
+  
+      .linkedin-text {
+        text-align: center;
+      }
+  
+      .linkedin-text h2 {
+        font-size: 28px;
+      }
+  
+      .linkedin-logo {
+        width: 100px;
+        height: 100px;
+        font-size: 50px;
+      }
+  
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+  
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+  
+      .contact-form {
+        margin: 40px 20px;
+        padding: 30px 20px;
+      }
+    }
+  
+    @media (max-width: 576px) {
+      .linkedin-hero h1 {
+        font-size: 28px;
+      }
+  
+      .linkedin-text h2 {
+        font-size: 24px;
+      }
+  
+      .what-we-do h3 {
+        font-size: 28px;
+      }
+  
+      .service-card {
+        padding: 30px 20px;
+      }
+  
+      .service-card h4 {
+        font-size: 20px;
+      }
+    }
+  </style>
+  </head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="/index.html"><img src="./images/logo.jpg" alt="CareerScopes"/></a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/about-us.html">About us</a></li>
+          <li><a href="/linkedin_optimization.html" class="active">Services</a></li>
+          <li><a href="/testimonials.html">Testimonials</a></li>
+        </ul>
+      </nav>
+      <div class="auth-buttons">
+        <a href="/login.html" class="login-btn">Login</a>
+        <a href="/register.html" class="register-btn">Register</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="linkedin-hero">
+    <div class="container">
+      <h1 data-cms="hero_title">LinkedIn Optimisation</h1>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="main-content">
+    <div class="container">
+      <!-- LinkedIn Section -->
+      <div class="linkedin-section">
+        <div class="linkedin-logo">in</div>
+        <div class="linkedin-text">
+          <h2 data-cms="headline_html">Stand out to recruiters<br>and employers</h2>
+          <a href="/contact-us.html" class="optimise-btn" data-cms="optimise_cta_text">Optimise Profile</a>
+        </div>
+      </div>
+
+      <!-- What We Do -->
+      <div class="what-we-do">
+        <h3 data-cms="what_we_do_title">What We Do ?</h3>
+        <div class="services-grid">
+          <div class="service-card">
+            <h4 data-cms="service1_title_html">Free<br>Profile Review</h4>
+            <a class="book-btn" href="/contact-us.html" data-cms="service1_cta_text">Book Optimisation</a>
+          </div>
+          <div class="service-card">
+            <h4 data-cms="service2_title">Complete Rewrite</h4>
+            <a class="book-btn" href="/contact-us.html" data-cms="service2_cta_text">Book Optimisation</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Imported Contact Form from contact-us.html -->
+      <div id="contact-form-slot" class="contact-form" aria-live="polite">
+        <noscript><p>For enquiries, please visit our <a href="/contact-us.html">Contact page</a>.</p></noscript>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-info">
+          <h3>CareerScopes</h3>
+          <p>Career Scopes would like to acknowledge the traditional custodians of the land on which we are based, the Aboriginal people of the Kulin Nation.</p>
+          <p>We also pay our respects to their Elders, past, present and future, whose cultures and customs have nurtured and continue to nurture this land.</p>
+          <p>We pay our respects to Elders past, present and future.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>About</h4>
+            <ul><li><a href="#">JOBS</a></li><li><a href="#">FAQS</a></li></ul>
+          </div>
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <ul><li><a href="#">Terms and Conditions</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Cookie Policy</a></li></ul>
+          </div>
+          <div class="footer-column">
+            <h4>Contact us</h4>
+            <div class="social-icons">
+              <a href="#" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" ...></svg><span>0421 594 877</span></a>
+              <a href="#" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" ...></svg><span style="font-size:.75rem">careerscopes@icloud.com</span></a>
+              <a href="#" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" ...></svg><span style="font-size:1rem">www.linkedin.com/in/lijesla</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="flags">
+          <img src="/images/image 13.png" alt="Aboriginal Flag" class="flag"/>
+          <img src="/images/image 14.png" alt="Torres Strait Islander Flag" class="flag"/>
+        </div>
+        <div class="copyright">© CareerScope - All Rights Reserved. Love From Australia</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Identify page for CMS injector
+    window.CMS_PAGE_SLUG = "linkedin_optimization";
+
+    // Import the existing contact form from /contact-us.html
+    document.addEventListener('DOMContentLoaded', async () => {
+      const slot = document.getElementById('contact-form-slot');
+      if (!slot) return;
+
+      try {
+        const res = await fetch('/contact-us.html', { credentials: 'same-origin' });
+        if (!res.ok) return;
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+
+        // Copy inline <style> so imported form keeps its look
+        doc.querySelectorAll('style').forEach(st => {
+          const s = document.createElement('style');
+          s.textContent = st.textContent;
+          document.head.appendChild(s);
+        });
+
+        // Grab the form wrapper (your contact page uses .contact-container > .contact-form > form)
+        const formWrapper =
+          doc.querySelector('.contact-container .contact-form') ||
+          doc.querySelector('.contact-form') ||
+          doc.querySelector('form');
+        if (!formWrapper) return;
+
+        slot.innerHTML = '';
+        slot.appendChild(formWrapper.cloneNode(true));
+
+        // Ensure any page JS is available
+        const need = ['/js/main.js'];
+        need.forEach(src => {
+          if (![...document.scripts].some(s => (s.src || '').endsWith(src))) {
+            const s = document.createElement('script');
+            s.src = src;
+            document.body.appendChild(s);
+          }
+        });
+      } catch (e) {
+        console.warn('Contact form import failed:', e);
+      }
+    });
+  </script>
+  
+  <script src="/js/cms.js" defer></script>
+</body>
+</html>

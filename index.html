@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CareerScopes - Empower Your Career Journey</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+    <style>
+      .header {
+        padding: 20px 0;
+        background-color: #fff;
+      }
+
+      .header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      @media (max-width: 768px) {
+        .header .container {
+          flex-direction: column;
+          gap: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <div class="logo">
+          <a href="./index.html">
+            <img src="./images/logo.jpg" alt="careerScops" />
+          </a>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="./index.html" class="active">Home</a></li>
+            <li><a href="./about-us.html">About us</a></li>
+            <li><a href="./testimonials.html">Testimonials</a></li>
+            <li><a href="./contact-us.html">Contact Us</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <a href="./login.html" class="login-btn">Login</a>
+          <a href="./register.html" class="register-btn">Register</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <h1>Empower Your Career Journey with CareerScopes</h1>
+          <p>
+            Personalized guidance, psychometric assessments, and career
+            resources to help you achieve your goals.
+          </p>
+        </div>
+        <div class="hero-image">
+          <a href="./home.html">
+            <div class="image-overlay">Career Scope</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="meet-lucy">
+      <div class="container">
+        <div class="lucy-image">
+          <img src="./images/image.png" alt="Career Development Practitioner" />
+        </div>
+        <div class="lucy-content">
+          <h2>Meet Lucy</h2>
+          <p>
+            As your personal Career Development Practitioner, Lucy will be by
+            your side, every step of the way as you embark into a world of
+            boundless career possibilities and opportunities.
+          </p>
+        </div>
+       <a href="https://www.cdaa.org.au/" target="_blank" class="association-logo cdaa">
+  <img src="./images/4enmhULP.jpg" alt="Career Development Association Australia" />
+</a>
+
+<a href="https://www.morrisby.com/" target="_blank" class="association-logo morrisby">
+  <img src="./images/K6mE6NqT.jpg" alt="Morrisby" />
+</a>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="quote">
+      <div class="container">
+        <h2>"Be great, because you love what you do"</h2>
+      </div>
+    </section>
+
+ <section class="features">
+  <video autoplay muted loop playsinline class="features-bg-video">
+    <source src="./images/animated-background.mp4" type="video/mp4" />
+  </video>
+  <div class="container">
+    <div class="feature"> <h3>Holistic Approach</h3> </div>
+    <div class="feature"> <h3>Personalised Services</h3> </div>
+    <div class="feature"> <h3>Friendly And Supportive</h3> </div>
+    <div class="feature"> <h3>Knowledgeable Expertise</h3> </div>
+  </div>
+</section>
+
+
+
+<section class="services">
+  <div class="container">
+    <h2>SERVICES</h2>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-icon">📚</div>
+        <h3>Career Coaching</h3>
+        <p class="service-desc">
+          Person-centred counselling for people who are either embarking into 
+          the world of work for the very first time or seeking to transition into a more
+          meaningful career. We help you navigate and understand your options.
+        </p>
+      </div>
+
+      <!-- Opens RESUME page in a new tab -->
+      <div class="service-card"
+           data-link="./resume_writing.html"
+           onclick="handleServiceCardClick(this, event)"
+           tabindex="0" role="button" aria-label="Open Resume Writing in new tab">
+        <div class="service-icon">📄</div>
+        <h3>Resume / Cover Letter Tailoring</h3>
+        <p class="service-desc">
+          Resume coaching to create, refine and strategise your resume for maximum
+          impact, plus goal identification and job search strategy.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">📖</div>
+        <h3>Psychometric Testing</h3>
+        <p class="service-desc">
+          Morrisby matches you to careers based on aptitudes, aspirations and personality.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">✉️</div>
+        <h3>Effective Networking</h3>
+        <p class="service-desc">
+          Strategies for building meaningful relationships and maintaining connections.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">👤</div>
+        <h3>Interview Coaching</h3>
+        <p class="service-desc">
+          Practice, feedback and strategies for different question types to boost confidence.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">💼</div>
+        <h3>Employment Searching</h3>
+        <p class="service-desc">
+          Personalised guidance and the ‘know-how’ to navigate today’s job market.
+        </p>
+      </div>
+
+      <!-- Opens LINKEDIN page in a new tab -->
+      <div class="service-card"
+           data-link="./linkedin_optimization.html"
+           onclick="handleServiceCardClick(this, event)"
+           tabindex="0" role="button" aria-label="Open LinkedIn Optimization in new tab">
+        <div class="service-icon">🔗</div>
+        <h3>LinkedIn Profiling</h3>
+        <p class="service-desc">
+          Optimise your profile and About section to attract the right opportunities.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">📦</div>
+        <h3>Packages</h3>
+        <p class="service-desc"></p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🧠</div>
+        <h3>Mental Health and Career Intervention</h3>
+        <p class="service-desc">
+          Address the interplay between work, development and mental wellbeing.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<script>
+  function toggleDescription(card) {
+    const desc = card.querySelector(".service-desc");
+    desc.style.display = desc.style.display === "block" ? "none" : "block";
+  }
+</script>
+
+
+    <footer>
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-info">
+            <h3>CareerScopes</h3>
+            <p>
+              Career Scopes would like to acknowledge the traditional custodians
+              of the land on which we are based, the Aboriginal people of the
+              Kulin Nation.
+            </p>
+            <p>
+              We also pay our respects to their Elders, past, present and
+              future, whose cultures and customs have nurtured and continue to
+              nurture this land.
+            </p>
+            <p>We pay our respects to Elders past, present and future.</p>
+          </div>
+          <div class="footer-links">
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <ul>
+                <li><a href="#">Terms and Conditions</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Cookie Policy</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h4>Contact us</h4>
+              <div class="social-icons">
+                <a href="#" class="social-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                    ></path>
+                  </svg>
+                  <span>0421 594 877</span>
+                </a>
+                <a href="#" class="social-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                    ></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                  <span style="font-size: 0.75rem"
+                    >careerscopes@icloud.com</span
+                  >
+                </a>
+                <a href="#" class="social-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                    ></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                  </svg>
+                  <span style="font-size: 1rem"
+                    >www.linkedin.com/in/lijesla</span
+                  >
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="flags">
+            <img
+              src="./images/image 13.png"
+              alt="Aboriginal Flag"
+              class="flag"
+            />
+            <img
+              src="./images/image 14.png"
+              alt="Torres Strait Islander Flag"
+              class="flag"
+            />
+          </div>
+          <div class="copyright">
+            © CareerScope - All Rights Reserved. Love From Australia
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      function handleServiceCardClick(card, evt) {
+        const link = card.getAttribute('data-link');
+        if (link) {
+          window.open(link, '_blank', 'noopener');
+          evt?.preventDefault();
+        }
+      }
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const el = document.activeElement;
+          if (el && el.classList.contains('service-card') && el.dataset.link) {
+            window.open(el.dataset.link, '_blank', 'noopener');
+            e.preventDefault();
+          }
+        }
+      });
+    </script>
+    
+    
+  </body>
+</html>
